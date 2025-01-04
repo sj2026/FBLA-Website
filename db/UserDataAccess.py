@@ -6,7 +6,7 @@ class UserDataAccess:
     def getUsers(self, status):
         connection_obj = ConnectionUtil.getConnection()
         userList = []
-        
+         
         try:
             cursor_obj = connection_obj.cursor()
 
