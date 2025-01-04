@@ -18,5 +18,5 @@ e) Open app.py. Run this python program
 
 You can add new stylesheets (Only css code in .css files) under assets folder. You can add any number of css file here, dash will automatically pickup the files
 
-Use these stylesheets in the html element in the programs
+Use these stylesheets in the html elements in the programs
 
