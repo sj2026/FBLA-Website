@@ -1,9 +1,9 @@
 import dash
 from dash import html
 
-dash.register_page(__name__, path='/home')
+app = dash.Dash(__name__)
 
-layout = html.Div(
+app.layout = html.Div(
     style={
         "backgroundColor": "#bec2cb", 
         "height": "97vh",
@@ -105,3 +105,21 @@ layout = html.Div(
         ),
     ]
 )
+
+    
+
+            
+
+
+               
+   
+
+       
+
+       
+    
+
+
+if __name__ == "__main__":
+    app.run_server(debug=True)
+
