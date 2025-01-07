@@ -1,2 +1,19 @@
 
 .Select-menu-outer { display : block !important; }
+
+.navbar {
+    color: #243951; 
+    text-decoration: none; 
+    font-size: 20px; 
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+.navbar:hover {
+    color: #549fc7; 
+    text-decoration: none; 
+}
+
+.button:hover {
+    transform: scale(1.1); /* Optional: Slight zoom effect */
+    transition: 0.3s; /* Smooth transition */
+}
