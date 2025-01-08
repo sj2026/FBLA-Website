@@ -17,7 +17,7 @@ resumeName_input = dbc.Row(
                 type = "resumeName",
                 id = "resumeName_row",
                 placeholder = "Enter the Resume's Name",
-                value = resume.resumeName
+                #value = resume.resumeName
             ),
             width = 10,
         ),
@@ -92,10 +92,10 @@ submitButton = html.Div(
 form = dbc.Form([resumeName_input, studentID_input, pastExperience_input, skillset_input, summary_input, submitButton, message])
 
 
-#layout = html.Div([
-#    form   
-#])
-
+layout = html.Div([
+    form   
+])
+'''
 def layout(mode=None, resume_id=None, **kwargs):
     if(mode=="view" or mode == "edit"):
         resumeAccess = ResumeDataAccess()
@@ -105,7 +105,7 @@ def layout(mode=None, resume_id=None, **kwargs):
     return html.Div(
         form
     )
-
+'''
 
 @callback(
     Output('outMessage', "children"),
