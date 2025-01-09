@@ -5,7 +5,7 @@ import dash_bootstrap_components as dbc
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 app.layout = html.Div([
-    
+           
     html.H1('Sun Prairie West High School Job Search Website', style={"textAlign": "center"}),
     html.Div([
         html.Div(
@@ -14,6 +14,7 @@ app.layout = html.Div([
     ]),
     dash.page_container
 ])
+
 
 if __name__ == '__main__':
     app.run(debug=True)

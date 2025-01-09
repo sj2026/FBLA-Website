@@ -31,7 +31,7 @@ layout = html.Div(
                 html.A(
                     href="#",              # so that when you click the logo it redirects to home page. 
                     children=html.Img(
-                        src="assets/image.png",
+                        src="/assets/logo.png",
                         style={
                             "height": "100px",
                             "width": "auto",  
@@ -61,10 +61,10 @@ layout = html.Div(
                 "alignItems": "center",},
                 
                  children=[
-                 html.A("Home", href="/home", className ="navbar"),
+                 html.A("Home", href="#", className="navbar"),
                 html.A("Jobs", href="#jobs", className="navbar"),                   # navbar buttons
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Log In", href="#login", className="navbar"),
+                html.A("Login", href="#login", className="navbar"),
+                html.A("Post a Job", href="#post", className="navbar"),
                 html.A("Contact Us", href="#contact", className="navbar"),]
                 
                 
@@ -74,13 +74,14 @@ layout = html.Div(
             style={
                 "textAlign": "center",
                 "position": "absolute",
-                "top": "85%",                                     # so that the paragraph is in the right place
+                "top": "55%",                                     # so that the paragraph is in the right place
                 "left": "50%",
                 "transform": "translate(-50%, -50%)",
             },
               children=[
                 html.P(
-                    "This is our website for Sun Prairie West High School students looking for a job.\nPlease sign up or log in to view job postings.",
+                    "This is our website for Sun Prairie West High School students looking for a job. "
+                    "Please sign up or log in to view job postings.",
                     style={
                         "fontSize": "20px",
                     }
