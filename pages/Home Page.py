@@ -61,11 +61,11 @@ layout = html.Div(
                 "alignItems": "center",},
                 
                  children=[
-                 html.A("Home", href="#", className="navbar"),
-                html.A("Jobs", href="#jobs", className="navbar"),                   # navbar buttons
-                html.A("Login", href="#login", className="navbar"),
-                html.A("Post a Job", href="#post", className="navbar"),
-                html.A("Contact Us", href="#contact", className="navbar"),]
+                 html.A("Home", href="home", className="navbar"),
+                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
+                html.A("Sign Up", href="signup", className="navbar"),
+                html.A("Post a Job", href="createposting", className="navbar"),
+                html.A("Contact Us", href="contactus", className="navbar"),]
                 
                 
                 ),
@@ -74,14 +74,14 @@ layout = html.Div(
             style={
                 "textAlign": "center",
                 "position": "absolute",
-                "top": "55%",                                     # so that the paragraph is in the right place
+                "top": "95%",                                     # so that the paragraph is in the right place
                 "left": "50%",
                 "transform": "translate(-50%, -50%)",
             },
               children=[
                 html.P(
                     "This is our website for Sun Prairie West High School students looking for a job. "
-                    "Please sign up or log in to view job postings.",
+                    "Please sign up to view job postings.",
                     style={
                         "fontSize": "20px",
                     }

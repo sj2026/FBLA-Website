@@ -1,147 +1,231 @@
 import dash
-from dash import  Input, Output, html, State, callback
+from dash import html, Input, Output, State, callback
 import dash_bootstrap_components as dbc
 from db.UserDataAccess import UserDataAccess
 from beans.User import User
 
-#app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
-dash.register_page(__name__, path="/signup")
+# Keep this
+dash.register_page(__name__, path='/signup')
 
-firstName_input = dbc.Row(
-    [
-        dbc.Label("First Name", html_for = "first_name_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "firstName",
-                id = "first_name_row",
-                placeholder = "Enter your first name"
-            ),
-            width = 10
+# Layout
+layout = html.Div(
+    style={
+        "backgroundColor": "#bec2cb",
+        "height": "100vh",
+        "padding": "0",
+        "color": "#1a1f61",
+        "margin": "0",
+        "border": "10px double #1a1f61",
+        "overflow": "hidden",
+        "boxSizing": "border-box",
+        "fontFamily": "Garamond",
+    },
+    children=[
+        # Header with logo and navbar
+        html.Div(
+            style={
+                "display": "flex",
+                "alignItems": "center",
+                "justifyContent": "space-between",
+                "padding": "10px 20px",
+                "backgroundColor": "#bec2cb",
+            },
+            children=[
+                # Logo
+                html.A(
+                    href="/home",
+                    children=html.Img(
+                        src="/assets/logo.png",
+                        style={
+                            "height": "80px",
+                            "width": "auto",
+                            "cursor": "pointer",
+                        },
+                    ),
+                ),
+           html.Nav(
+            style={
+              
+                "padding": "10px",
+                "display": "flex",
+                "justifyContent": "space-around", 
+                                "gap":"20px",                # style and look for navbar
+                "alignItems": "center",},
+                
+                 children=[
+                html.A("Home", href="home", className="navbar"),
+                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
+                html.A("Sign Up", href="signup", className="navbar"),
+                html.A("Post a Job", href="createposting", className="navbar"),
+                html.A("Contact Us", href="contactus", className="navbar"),]
+                ),
+            ],
+        ),
+
+        # Form Section
+        html.Div(
+            style={
+                "textAlign": "center",
+                "position": "absolute",
+                "top": "96%",
+                "left": "50%",
+                "transform": "translate(-50%, -50%)",
+                "width": "95%",
+                "backgroundColor": "none",
+               
+            },
+            children=[
+              html.H2("Sign Up", style={"color": "#1a1f61",}),  
+                dbc.Form(
+                    [
+                        dbc.Row(
+                            [
+                                dbc.Label("First Name", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="first_name_row",
+                                        placeholder="Enter your first name",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Last Name", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="last_name_row",
+                                        placeholder="Enter your last name",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Email", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="email",
+                                        id="email_row",
+                                        placeholder="Enter your email",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Phone Number", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="tel",
+                                        id="phone_number_row",
+                                        placeholder="Enter your phone number",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Password", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="password",
+                                        id="password_row",
+                                        placeholder="Create your password",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Username", width=3),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="username_row",
+                                        placeholder="Create your username",
+                                        style={"backgroundColor":"#bec2cb",
+                                               "color":"#1a1f61",
+                                               "borderColor":"#1a1f61",},
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        html.Div(
+                            dbc.Button(
+                                "Submit",
+                                id="submit_button",
+                                className="button",
+                                n_clicks=0,
+                                style={"backgroundColor":"#1a1f61",
+                                       "color":"white"},
+                            ),
+                            style={"textAlign": "center"},
+                        ),
+                        html.Div(id="message", style={"marginTop": "10px", "color": "#1a1f61"}),
+                    ]
+                ),
+            ],
         ),
     ],
-    className = "mb-3",  
 )
 
-lastName_input = dbc.Row(
-    [
-        dbc.Label("Last Name", html_for = "last_name_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "lastName",
-                id = "last_name_row",
-                placeholder = "Enter your last name",
-            ),
-            width = 10,
-        ),
-    ],
-    className = "mb-3",
-)
-
-email_input = dbc.Row(
-    [
-        dbc.Label("Email", html_for = "email_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "email",
-                id = "email_row",
-                placeholder = "Enter your email",
-            ),
-            width = 10,
-        ),
-    ],
-    className = "mb-3",
-)
-
-phoneNumber_input = dbc.Row(
-    [  
-        dbc.Label("Phone Number", html_for = "phone_number_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "phoneNumber",
-                id = "phone_number_row",
-                placeholder = "Enter your phone number",
-            ),
-            width = 10,
-        ),
-    ],
-    className = "mb-3",
-)
-
-password_input = dbc.Row(
-    [  
-        dbc.Label("Password", html_for = "password_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "password",
-                id = "password_row",
-                placeholder = "Create your password",
-            ),
-            width = 10,
-        ),
-    ],
-    className = "mb-3",
-)
-
-username_input = dbc.Row(
-    [  
-        dbc.Label("Username", html_for = "username_row", width = 2),
-        dbc.Col(
-            dbc.Input(
-                type = "username",
-                id = "username_row",
-                placeholder = "Create your username",
-            ),
-            width = 10,
-        ),
-    ],
-    className = "mb-3",
-)
-
-message = html.Div(id = "message", children = "")
-
-
-submitButton = html.Div(
-    html.Button("Submit", id='submit_button',  className = "me-1", n_clicks=0)
-    )
-
-form = dbc.Form([firstName_input, lastName_input, email_input, phoneNumber_input, password_input, username_input, submitButton, message])
-
-
-layout = html.Div([
-    form   
-])
-
+# Callback for form submission
 @callback(
-    Output('message', "children"),
-    Input('submit_button', 'n_clicks'),
-    State('first_name_row', 'value'),
-    State('last_name_row', 'value'),
-    State('email_row', 'value'),
-    State('phone_number_row','value'),
-    State('password_row', 'value'),
-    State('username_row', 'value'),
-    prevent_initial_call = True
-
+    Output("message", "children"),
+    Input("submit_button", "n_clicks"),
+    State("first_name_row", "value"),
+    State("last_name_row", "value"),
+    State("email_row", "value"),
+    State("phone_number_row", "value"),
+    State("password_row", "value"),
+    State("username_row", "value"),
+    prevent_initial_call=True,
 )
-
-def onSubmit(clicks, firstName, lastName, email, phoneNumber, password, username):
-    dataAccess = UserDataAccess()
-    
-    newUser = User()
-    newUser.firstName = firstName
-    newUser.lastName = lastName
-    newUser.email = email
-    newUser.phoneNumber = phoneNumber
-    newUser.isAdmin = "False"
-    newUser.status = "New"
-    newUser.password = password
-    newUser.username = username
-    
-    dataAccess.createUser(newUser)
-    
-    return "You have been registered. Please wait for the admin to approve you as a student or employer. To sign in again, use your password: '" + password + "' and username: '" + username + "'"
-    
-#if __name__ == '__main__':
-#    app.run(debug=True)
-  
-
+def on_submit(n_clicks, first_name, last_name, email, phone_number, password, username):
+    data_access = UserDataAccess()
+    new_user = User(
+        firstName=first_name,
+        lastName=last_name,
+        email=email,
+        phoneNumber=phone_number,
+        isAdmin=False,
+        status="New",
+        password=password,
+        username=username,
+    )
+    data_access.createUser(new_user)
+    return (
+        f"You have been registered! Please wait for approval. Use your username: '{username}' "
+        f"and password: '{password}' to log in."
+    )

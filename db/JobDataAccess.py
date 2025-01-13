@@ -10,18 +10,20 @@ class JobDataAccess:
         try:
             cursor_obj = connection_obj.cursor()
 
-            statement = '''SELECT * FROM JobPosting '''
+            # Base SQL statement
+            statement = '''SELECT * FROM JobPosting'''
             
-   
-            if (status != "All"):
-                statement = statement + "where Status = '" + status + "'"
-            
-            
+            # Add condition for status
+            if status != "All":
+                statement += " WHERE status = ?"
+                cursor_obj.execute(statement, (status,))
+            else:
+                cursor_obj.execute(statement)
 
-            cursor_obj.execute(statement)
-
+            # Fetch results
             output = cursor_obj.fetchall()
 
+            # Convert results to Job objects
             for row in output:
                 job = Job()
                 job.id = row[0]
@@ -37,51 +39,48 @@ class JobDataAccess:
                 job.status = row[10]
                 jobList.append(job)
                 
+            # Convert to DataFrame
             df = pd.DataFrame.from_records([d.to_dict() for d in jobList])
-            connection_obj.commit()
             return df
 
         except Exception as e:
-            print(e)
-            connection_obj.rollback()
-            
+            print(f"Error in getJobs: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame in case of error
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()
-            
+
     def updateJob(self, job):
         connection_obj = ConnectionUtil.getConnection()
         
         try:
             cursor_obj = connection_obj.cursor()
-            sql = "UPDATE jobPosting SET status = '" + job.status + "' WHERE id = " + str(job.id)
-            cursor_obj.execute(sql) 
+            sql = "UPDATE JobPosting SET status = ? WHERE id = ?"
+            cursor_obj.execute(sql, (job.status, job.id))
             connection_obj.commit()
-                                       
-        
+
         except Exception as e:
-            print(e)
+            print(f"Error in updateJob: {e}")
             connection_obj.rollback()
-            
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()
-                
-                
 
     def createJob(self, job):
         connection_obj = ConnectionUtil.getConnection()
         
         try:
             cursor_obj = connection_obj.cursor()
-
-            cursor_obj.execute('INSERT INTO jobPosting (title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, status) VALUES (?,?,?,?,?,?,?,?,?,?)', (job.title, job.company, job.location, job.workHours, job.wageAmount, job.description, job.qualifications, job.benefits, job.keywords, job.status))
+            sql = '''INSERT INTO JobPosting 
+                     (title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, status) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+            cursor_obj.execute(sql, (job.title, job.company, job.location, job.workHours, job.wageAmount, 
+                                     job.description, job.qualifications, job.benefits, job.keywords, job.status))
             connection_obj.commit()
-        
+
         except Exception as e:
-            print(e)
+            print(f"Error in createJob: {e}")
             connection_obj.rollback()
-            
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()
