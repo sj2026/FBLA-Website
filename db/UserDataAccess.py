@@ -10,18 +10,20 @@ class UserDataAccess:
         try:
             cursor_obj = connection_obj.cursor()
 
-            statement = '''SELECT * FROM User '''
+            # Base SQL query
+            statement = '''SELECT * FROM User'''
             
-   
-            if (status != "All"):
-                statement = statement + "where Status = '" + status + "'"
-            
-            
+            # Add WHERE clause if necessary
+            if status != "All":
+                statement += " WHERE status = ?"
+                cursor_obj.execute(statement, (status,))
+            else:
+                cursor_obj.execute(statement)
 
-            cursor_obj.execute(statement)
-
+            # Fetch results
             output = cursor_obj.fetchall()
 
+            # Convert rows to User objects
             for row in output:
                 user = User()
                 user.id = row[0]
@@ -35,16 +37,15 @@ class UserDataAccess:
                 user.username = row[8]
                 userList.append(user)
                 
+            # Convert to DataFrame
             df = pd.DataFrame.from_records([d.to_dict() for d in userList])
-            connection_obj.commit()
             return df
 
         except Exception as e:
-            print(e)
-            connection_obj.rollback()
-            
+            print(f"Error in getUsers: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame in case of error
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()
           
     def doesUserExist(self, username, password):
@@ -86,33 +87,38 @@ class UserDataAccess:
         
         try:
             cursor_obj = connection_obj.cursor()
-            sql = "UPDATE USER SET status = '" + user.status + "', isAdmin = '" + user.isAdmin +  "' WHERE id = " + str(user.id)
-            cursor_obj.execute(sql) 
+
+            # Use parameterized query for updates
+            sql = '''UPDATE User 
+                     SET status = ?, isAdmin = ? 
+                     WHERE id = ?'''
+            cursor_obj.execute(sql, (user.status, user.isAdmin, user.id))
             connection_obj.commit()
-                                       
-        
+
         except Exception as e:
-            print(e)
+            print(f"Error in updateUser: {e}")
             connection_obj.rollback()
-            
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()
                 
-
     def createUser(self, user):
         connection_obj = ConnectionUtil.getConnection()
         
         try:
             cursor_obj = connection_obj.cursor()
 
-            cursor_obj.execute('INSERT INTO USER (firstName, lastName, email, phoneNumber, isAdmin, status, password, username) VALUES (?,?,?,?,?,?,?,?)', (user.firstName, user.lastName, user.email, user.phoneNumber, user.isAdmin, user.status, user.password, user.username))
+            # Use parameterized query for inserts
+            sql = '''INSERT INTO User 
+                     (firstName, lastName, email, phoneNumber, isAdmin, status, password, username) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+            cursor_obj.execute(sql, (user.firstName, user.lastName, user.email, user.phoneNumber, 
+                                     user.isAdmin, user.status, user.password, user.username))
             connection_obj.commit()
-        
+
         except Exception as e:
-            print(e)
+            print(f"Error in createUser: {e}")
             connection_obj.rollback()
-            
+
         finally:
-            #cursor_obj.close()
             connection_obj.close()

@@ -104,7 +104,7 @@ layout = html.Div(
               children=[
                 html.P(
                     "This is our website for Sun Prairie West High School students looking for a job. "
-                    "Please sign up to view job postings.",
+                    "Please sign up or log in to view job postings.",
                     style={
                         "fontSize": "20px",
                     }
