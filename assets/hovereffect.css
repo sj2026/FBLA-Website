@@ -1,5 +1,5 @@
 .navbar {
-    color: #243951; 
+    color: #1a1f61; 
     text-decoration: none; 
     font-size: 20px; 
     transition: color 0.3s, text-decoration 0.3s;
@@ -44,7 +44,7 @@
 }
 
 .important {
-    color : black;
+    color : #1a1f61;
     font-size: 35px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-weight: 500;

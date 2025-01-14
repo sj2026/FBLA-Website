@@ -17,18 +17,21 @@ input_style = {
     "height": "40px",
     "borderRadius": "5px",
     "padding": "5px",
-    "borderColor": "#1a1f61",
+    "border": "1px solid #1a1f61",  # Dark blue border for inputs
+    "overflowY": "auto",  # Make input scrollable if text overflows
 }
 
 # Textarea style
 textarea_style = {
-    "width": "100%",
+     "width": "100%",
     "height": "100px",
     "backgroundColor": "#bec2cb",
     "color": "#1a1f61",
     "borderRadius": "5px",
     "padding": "5px",
-    "borderColor": "#1a1f61",
+    "resize": "vertical",  # Allow vertical resizing for the textarea
+    "overflowY": "auto",  # Enable scrolling if content exceeds the height
+    "border": "1px solid #1a1f61",  # Dark blue border for textareas
 }
 
 # Navbar
@@ -43,7 +46,7 @@ navbar = html.Div(
     children=[
         # Logo
         html.A(
-            href="/home",
+            href="/",
             children=html.Img(
                 src="/assets/logo.png",
                 style={
@@ -61,11 +64,11 @@ navbar = html.Div(
                 "alignItems": "center",
             },
             children=[
-               html.A("Home", href="home", className="navbar"),
-                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
-                html.A("Sign Up", href="signup", className="navbar"),
-                html.A("Post a Job", href="createposting", className="navbar"),
-                html.A("Contact Us", href="contactus", className="navbar"),]
+  html.A("Home", href="/", className="navbar"),
+                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),                   # navbar buttons
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
+                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),]
         ),
     ],
 )
