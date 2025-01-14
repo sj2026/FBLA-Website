@@ -69,7 +69,7 @@ layout = html.Div(
                 html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),                   # navbar buttons
                 html.A("Sign Up", href="/signup", className="navbar"),
                 html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),]
+                html.A("Post a Job", href="/job/new/none", className="navbar"),]
                
                
                 ),
