@@ -22,7 +22,7 @@ layout = html.Div([
     
     html.Div(
         dash_table.DataTable(
-            id = 'table',
+            id = 'Usertable',
             data = df.to_dict('records'), 
             columns = [
                 {"id": 'id', "name": "User ID", 'editable' : False},
@@ -56,7 +56,7 @@ layout = html.Div([
         sort_mode = "single",
         page_action = "native",
         page_current = 0,
-        page_size = 10
+        page_size = 8
         )
     ),
     html.Div(id='table-dropdown-container'),
@@ -66,10 +66,10 @@ layout = html.Div([
 
 @callback(
     Output('div-result', 'children'),
-    [Input('table', 'data'),
-     Input('table', 'columns')],
+    [Input('Usertable', 'data'),
+     Input('Usertable', 'columns')],
      [
-        State("table", "data_previous"),], prevent_initial_call=True
+        State("Usertable", "data_previous"),], prevent_initial_call=True
 )
 def update_tol_db(rows, columns, prev_rows):
     if prev_rows:
@@ -84,7 +84,7 @@ def update_tol_db(rows, columns, prev_rows):
     return ""
 
 @callback(
-    Output('table', 'data'),
+    Output('Usertable', 'data'),
     Input('dropDownMenu', "value")
 )
 def loadTable(value):

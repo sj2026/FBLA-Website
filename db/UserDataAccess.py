@@ -46,7 +46,41 @@ class UserDataAccess:
         finally:
             #cursor_obj.close()
             connection_obj.close()
+          
+    def doesUserExist(self, username, password):
+        connection_obj = ConnectionUtil.getConnection()
+        userList = []
+         
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            statement = '''SELECT * FROM User where Username = ''' +  "'" + username + "'"
             
+
+            cursor_obj.execute(statement)
+
+            output = cursor_obj.fetchall()
+
+            for row in output:
+                user = User()
+                user.id = row[0]
+                user.password = row[7]
+                
+                if (user.password == password):
+                    return user.id
+            
+            return 0
+                
+
+        except Exception as e:
+            print(e)
+            connection_obj.rollback()
+            
+        finally:
+            #cursor_obj.close()
+            connection_obj.close()
+        
+          
     def updateUser(self, user):
         connection_obj = ConnectionUtil.getConnection()
         

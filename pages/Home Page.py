@@ -1,8 +1,31 @@
 import dash
 from dash import html
+import dash_bootstrap_components as dbc
 
 #keep this
 dash.register_page(__name__, path='/home') 
+
+jobSearch_input = dbc.Row(
+    [
+        dbc.Col(
+            dbc.Input(
+                type = "jobSearch",
+                id = "jobSearch_row",
+                placeholder = "Search For a Job Title, Company, etc",
+                className = "input"
+                
+            ),
+            width = 10
+        ),
+    ],
+    className = "input",  
+)
+
+searchButton = html.Div(
+    html.Button("Search", id='search_button',  className="button", n_clicks=0)
+    )
+
+form = dbc.Form([jobSearch_input, searchButton], style={"textAlign": "center"})
 
 layout = html.Div(
     style={
@@ -61,11 +84,11 @@ layout = html.Div(
                 "alignItems": "center",},
                 
                  children=[
-                 html.A("Home", href="#", className="navbar"),
-                html.A("Jobs", href="#jobs", className="navbar"),                   # navbar buttons
-                html.A("Login", href="#login", className="navbar"),
-                html.A("Post a Job", href="#post", className="navbar"),
-                html.A("Contact Us", href="#contact", className="navbar"),]
+                 html.A("Home", href="home", className="navbar"),
+                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
+                html.A("Sign Up", href="signup", className="navbar"),
+                html.A("Post a Job", href="createposting", className="navbar"),
+                html.A("Contact Us", href="contactus", className="navbar"),]
                 
                 
                 ),
@@ -74,35 +97,21 @@ layout = html.Div(
             style={
                 "textAlign": "center",
                 "position": "absolute",
-                "top": "55%",                                     # so that the paragraph is in the right place
+                "top": "60%",                                     # so that the paragraph is in the right place
                 "left": "50%",
                 "transform": "translate(-50%, -50%)",
             },
               children=[
                 html.P(
                     "This is our website for Sun Prairie West High School students looking for a job. "
-                    "Please sign up or log in to view job postings.",
+                    "Please sign up to view job postings.",
                     style={
                         "fontSize": "20px",
                     }
                 ),
-                html.A(
-                    "Start Here", 
-                    href="#login",  
-                    className="button", 
-                    style={
-                        "display": "inline-block",
-                        "padding": "10px 20px",
-                        "fontSize": "18px",
-                        "backgroundColor": "#1a1f61",       # so that the button looks right and is linked to the same as the login button
-                        "color": "white",
-                        "borderRadius": "5px",
-                        "textDecoration": "none", 
-                        "cursor": "pointer",
-                        "transition": "0.3s",  
-                    },
-                ),
+                
             ]
         ),
+         form
     ]
 )

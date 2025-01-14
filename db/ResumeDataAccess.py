@@ -75,14 +75,17 @@ class ResumeDataAccess:
             connection_obj.close()
             
             
-    def updateResume(self, job):
+    def updateResume(self, resume):
         connection_obj = ConnectionUtil.getConnection()
-        
+
         try:
             cursor_obj = connection_obj.cursor()
-            sql = "UPDATE jobPosting SET status = '" + job.status + "' WHERE id = " + str(job.id)
-            cursor_obj.execute(sql) 
+            sql = "UPDATE Resume SET ResumeName = ? WHERE id = ?" #, () + str(resume.id)
+            print(sql)
+            cursor_obj.execute(sql,(str(resume.resumeName), resume.id)) 
+        
             connection_obj.commit()
+
                                        
         
         except Exception as e:
@@ -96,14 +99,14 @@ class ResumeDataAccess:
                 
 
     def createResume(self, resume):
-        connection_obj = ConnectionUtil.getConnection()
+        connection_obj = ConnectionUtil.getConnection()      
         
         try:
             cursor_obj = connection_obj.cursor()
 
             cursor_obj.execute('INSERT INTO Resume (resumeName, studentID, pastExperience, skillset, summary) VALUES (?,?,?,?,?)', (resume.resumeName, resume.studentID, resume.pastExperience, resume.skillset, resume.summary))
             connection_obj.commit()
-        
+            
         except Exception as e:
             print(e)
             connection_obj.rollback()

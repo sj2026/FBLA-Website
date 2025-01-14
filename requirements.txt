@@ -1,3 +1,5 @@
 dash
 pandas
 dash_bootstrap_components
+cryptography
+whoosh

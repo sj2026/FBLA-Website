@@ -3,6 +3,45 @@ from beans.Job import Job
 from db import ConnectionUtil
 
 class JobDataAccess:
+    def getJob(self, jobID):
+        connection_obj = ConnectionUtil.getConnection()
+        
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            statement = '''SELECT * FROM jobPosting where ID = ''' + jobID + ''''''
+
+
+            cursor_obj.execute(statement)
+
+            output = cursor_obj.fetchall()
+
+            for row in output:
+                job = Job()
+                job.id = row[0]
+                job.title = row[1]
+                job.company = row[2]
+                job.location = row[3]
+                job.workHours = row[4]
+                job.wageAmount = row[5]
+                job.description = row[6]
+                job.qualifications = row[7]
+                job.benefits = row[8]
+                job.keywords = row[9]
+                job.status = row[10]
+
+                return job
+    
+    
+
+        except Exception as e:
+            print(e)
+            connection_obj.rollback()
+            
+        finally:
+            #cursor_obj.close()
+            connection_obj.close()
+    
     def getJobs(self, status):
         connection_obj = ConnectionUtil.getConnection()
         jobList = []
