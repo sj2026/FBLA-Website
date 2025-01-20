@@ -1,48 +1,15 @@
 import dash
-from dash import html, callback, Input, Output, State, dcc
-import dash_bootstrap_components as dbc
+from dash import html
 
-<<<<<<< HEAD
+
 # keep this
 dash.register_page(__name__, path='/')
 
+
 layout = html.Div(
-=======
-
-#keep this
-dash.register_page(__name__, path='/') 
-
-
-def layout(**kwargs):
-
-    jobSearch_input = dbc.Row(
-    [
-            dbc.Col(
-                dbc.Input(
-                    type = "jobSearch",
-                    id = "jobSearch_row",
-                    placeholder = "Search For a Job Title, Company, etc",
-                    className = "input"
-                    
-                ),
-                width = 10
-            ),
-        ],
-        className = "input",  
-    )
-
-    searchButton = html.Div(
-        html.Button("Search", id='search_button',  className="button", n_clicks=0)
-        )
-
-    form = dbc.Form([jobSearch_input, searchButton], style={"textAlign": "center"})
-
-
-    return html.Div(
->>>>>>> 22d810a160b1d39e509d7ad6fbb0075682f55579
     style={
         "backgroundColor": "#bec2cb",
-        "minHeight": "300vh", 
+        "minHeight": "300vh",
         "padding": "0",
         "color": "#1a1f61",    # for overall look and style of website
         "margin": "0",
@@ -51,10 +18,11 @@ def layout(**kwargs):
         "fontFamily": "Garamond",
         "display": "flex",    
         "flexDirection": "column",
-        "height": "100%",       
+        "height": "100%",      
         "overflowY": "auto",  
     },
     children=[
+
 
         html.Div(
             style={
@@ -64,6 +32,7 @@ def layout(**kwargs):
                 "width": "100%",
             },
             children=[
+
 
                 html.A(
                     href="/",  # so that when you click the logo it redirects to the home page.
@@ -88,7 +57,7 @@ def layout(**kwargs):
             ]
         ),
 
-<<<<<<< HEAD
+
         html.Nav(
             style={
                 "padding": "10px",
@@ -105,12 +74,8 @@ def layout(**kwargs):
             ]
         ),
 
+
         html.Div(
-=======
-        html.Div(id="navbar"),
-        
-         html.Div(
->>>>>>> 22d810a160b1d39e509d7ad6fbb0075682f55579
             style={
                 "textAlign": "center",
                 "position": "relative",     # spacing and scrollability for page
@@ -126,7 +91,6 @@ def layout(**kwargs):
                         "marginBottom": "20px",  # margin to space out text
                     }
                 ),
-<<<<<<< HEAD
                 html.A(
                     "Start Here",
                     href="signup",  
@@ -145,12 +109,12 @@ def layout(**kwargs):
                 ),
             ],
         ),
-        
+       
        
         html.Div(
             style={
                 "position": "absolute",
-                "top": "88%",             
+                "top": "88%",            
                 "left": "5%",              
                 "width": "40%",                      # position and stuff for our mission section
                 "display": "flex",        
@@ -167,13 +131,13 @@ def layout(**kwargs):
                 ),
             ]
         ),
-        
+       
         # Our Mission Section
         html.Div(
             style={
                 "position": "absolute",
                 "top": "100%",            
-                "right": "5%",             
+                "right": "5%",            
                 "width": "40%",            
                 "backgroundColor": "#1a1f61",  
                 "padding": "20px",      
@@ -193,11 +157,12 @@ def layout(**kwargs):
                         "width": "100%",              
                         "textAlign": "left",        
                         "marginTop": "20px",    
-                        "color": "white",     
+                        "color": "white",    
                     }
                 ),
             ]
         ),
+
 
         html.Div(
             style={
@@ -218,25 +183,26 @@ def layout(**kwargs):
                         "width": "100%",              
                         "textAlign": "left",        
                         "marginTop": "20px",    
-                        "color": "white",     
+                        "color": "white",    
                     }
                 ),
             ]
         ),
 
-        
+
+       
         html.Div(
             style={
                "position": "absolute",
         "top": "190%",              
-        "right": "5%",             
+        "right": "5%",            
         "width": "40%",            
         "display": "flex",                    #second image
         "alignItems": "center",    
         "justifyContent": "center",
-        "backgroundColor": "#1a1f61", 
+        "backgroundColor": "#1a1f61",
         "padding": "10px",  
-        "borderRadius": "10px", 
+        "borderRadius": "10px",
             },
             children=[
                 html.Img(
@@ -250,6 +216,7 @@ def layout(**kwargs):
             ]
         ),
 
+
         # Footer
         html.Footer(
             style={
@@ -258,14 +225,14 @@ def layout(**kwargs):
                 "textAlign": "center",
                 "padding": "20px",  
                 "fontSize": "18px",  
-                "width": "100%",   
-                "borderTop": "5px solid #549fc7", 
+                "width": "100%",  
+                "borderTop": "5px solid #549fc7",
             },
            children=[
     html.H3(
         children=[
             html.Span(
-                "Sun Prairie West Job Search | ", 
+                "Sun Prairie West Job Search | ",
                 style={
                     "fontWeight": "bold",  # bold only for the title
                 }
@@ -280,7 +247,7 @@ def layout(**kwargs):
              html.H4(
     children=[
         html.Span(
-            "Contact Us - ", 
+            "Contact Us - ",
             style={
                 "color": "white",
                 "fontWeight": "bold",  # Bold only for "Contact Us"
@@ -296,10 +263,12 @@ def layout(**kwargs):
 ),
 
 
+
+
      
                 html.A(
                     "Darsh Rewri",  
-                    href="mailto:darsh.rewri@gmail.com", 
+                    href="mailto:darsh.rewri@gmail.com",
                     className="footer",                       # links to the contact us for email
                     style={
                         "marginRight": "20px",
@@ -312,106 +281,7 @@ def layout(**kwargs):
                 ),
             ],
         ),
-=======
-                
-            ]
-        ),
-         form,
-         html.Div(id = "redirectToJobs") 
->>>>>>> 22d810a160b1d39e509d7ad6fbb0075682f55579
     ]
-    )
-
-@callback(
-    Output('navbar','children'),
-    Input('session','data'),
-)
-def initial_load(data):
-    session = data
-    if session and session['loggedIn']:
-        if (session['userStatus'] == "Student"):
-            return html.Nav(
-                style={
-                
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",                 # style and look for navbar
-                    "alignItems": "center",},
-                    
-                    children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("Student Profile", href="jobs", className="navbar"),                   # navbar buttons
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("Resumes", href="createposting", className="navbar"),
-                    html.A("Apply for a job", href="contactus", className="navbar"),]
-                    
-                    
-                    ),
-            
-
-        elif (session['userStatus'] == "Employer"):
-            return html.Nav(
-                style={
-                
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",                 # style and look for navbar
-                    "alignItems": "center",},
-                    
-                    children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("Create Job Posting", href="jobs", className="navbar"),                   # navbar buttons
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("View Job Applications", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),]
-                    
-                    
-                    ),
-
-        elif (session['userStatus'] == "Admin"):
-            return html.Nav(
-                style={
-                
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",                 # style and look for navbar
-                    "alignItems": "center",},
-                    
-                    children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("View Users", href="jobs", className="navbar"),                   # navbar buttons
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("View Job Postings", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),]
-                    
-                    
-                    ),
-    else:
-        return html.Nav(
-                style={
-                
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",                 # style and look for navbar
-                    "alignItems": "center",},
-                    
-                    children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
-                    html.A("Sign Up", href="signup", className="navbar"),
-                    html.A("Post a Job", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),]
-                    
-                    
-                    ),
-
-
-@callback(
-    Output("redirectToJobs", 'children'),
-    Input('search_button', 'n_clicks'),
-    State('jobSearch_row', 'value'),
-    prevent_initial_call=True, 
 )
 
-def onSearch(clicks, searchTerm):
-    return dcc.Location(pathname="/viewposting/"+ str(searchTerm), id="location_JobID")
+
