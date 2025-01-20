@@ -136,6 +136,7 @@ layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(id = "redirectOutput")
             ],
         ),
     ],
