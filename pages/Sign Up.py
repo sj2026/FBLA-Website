@@ -33,7 +33,7 @@ def layout(**kwargs):
             children=[
                 # Logo
                 html.A(
-                    href="/home",
+                    href="/",
                     children=html.Img(
                         src="/assets/logo.png",
                         style={
@@ -53,11 +53,11 @@ def layout(**kwargs):
                 "alignItems": "center",},
                 
                  children=[
-                html.A("Home", href="home", className="navbar"),
-                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
-                html.A("Sign Up", href="signup", className="navbar"),
-                html.A("Post a Job", href="createposting", className="navbar"),
-                html.A("Contact Us", href="contactus", className="navbar"),]
+            html.A("Home", href="/", className="navbar"),
+                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),                   # navbar buttons
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
+                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),]
                 ),
             ],
         ),
@@ -67,7 +67,7 @@ def layout(**kwargs):
             style={
                 "textAlign": "center",
                 "position": "absolute",
-                "top": "57%",
+                "top": "53%",
                 "left": "50%",
                 "transform": "translate(-50%, -50%)",
                 "width": "95%",

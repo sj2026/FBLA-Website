@@ -34,8 +34,8 @@ def layout(**kwargs):
 
     return html.Div(
     style={
-        "backgroundColor": "#bec2cb", 
-        "height": "97vh",
+        "backgroundColor": "#bec2cb",
+        "height": "100vh",
         "padding": "0",
         "color": "#1a1f61",                  # for overall look of website
         "margin":"0",
@@ -43,37 +43,38 @@ def layout(**kwargs):
         "overflow": "hidden",
         "boxSizing":"border-box",
         "fontFamily":"Garamond",
-        
+       
     },
     children=[
+
 
         html.Div(
             style={
                 "display": "flex",  
                 "alignItems": "center",
                 "justifyContent": "center",    #for the logo and title to be inline
-                "width": "100%", 
+                "width": "100%",
             },
                   children=[
-                
+               
                 html.A(
-                    href="#",              # so that when you click the logo it redirects to home page. 
+                    href="/",              # so that when you click the logo it redirects to home page.
                     children=html.Img(
                         src="/assets/logo.png",
                         style={
                             "height": "100px",
                             "width": "auto",  
                             "display": "inline",                   # logo and make it click
-                            "marginRight": "20px", 
+                            "marginRight": "20px",
                             "cursor": "pointer",  
                         }
                     ),
                 ),
                 html.H1(
-                    "Sun Prairie West Job Search", 
+                    "Sun Prairie West Job Search",
                     style={
                         "fontSize": "40px",                 # title
-                        "textAlign": "left", 
+                        "textAlign": "left",
                     }
                 ),
             ]
@@ -85,14 +86,14 @@ def layout(**kwargs):
             style={
                 "textAlign": "center",
                 "position": "absolute",
-                "top": "60%",                                     # so that the paragraph is in the right place
+                "top": "55%",                                     # so that the paragraph is in the right place
                 "left": "50%",
                 "transform": "translate(-50%, -50%)",
             },
               children=[
                 html.P(
                     "This is our website for Sun Prairie West High School students looking for a job. "
-                    "Please sign up or log in to view job postings.",
+                    "Please sign up to view job postings.",
                     style={
                         "fontSize": "20px",
                     }
