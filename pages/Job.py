@@ -4,7 +4,9 @@ import dash_bootstrap_components as dbc
 from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 
+
 dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
+
 
 # Default job data structure
 job = {
@@ -21,6 +23,7 @@ job = {
     'status': '',
 }
 
+
 # Standard input style
 input_style = {
     "backgroundColor": "#bec2cb",
@@ -30,8 +33,9 @@ input_style = {
     "borderRadius": "5px",
     "padding": "5px",
     "border": "1px solid #1a1f61",  
-    "overflowY": "auto", 
+    "overflowY": "auto",
 }
+
 
 # Textarea style with scroll
 textarea_style = {
@@ -45,6 +49,7 @@ textarea_style = {
     "overflowY": "auto",  
     "border": "1px solid #1a1f61",  # Dark blue border for textareas
 }
+
 
 # Navbar styling
 navbar = html.Div(
@@ -85,17 +90,21 @@ navbar = html.Div(
     ],
 )
 
+
 # Layout function for Job Posting page
 def layout(mode=None, job_id=None, **kwargs):
     global screenMode
     screenMode = mode
 
+
     global jobID
     jobID = job_id
+
 
     global job
     readOnly = ''
     onlyRead = False
+
 
     # Set job details for 'view' and 'edit' modes
     if job_id is None:
@@ -106,9 +115,11 @@ def layout(mode=None, job_id=None, **kwargs):
         jobTemp = jobAccess.getJob(job_id)
         job.update(vars(jobTemp))
 
+
     if mode == 'view':
         readOnly = "readOnly"
         onlyRead = True
+
 
     # Form inputs
     inputs = [
@@ -144,6 +155,7 @@ def layout(mode=None, job_id=None, **kwargs):
         },
     ]
 
+
     textareas = [
         {
             "label": "Job Description",
@@ -171,6 +183,7 @@ def layout(mode=None, job_id=None, **kwargs):
         },
     ]
 
+
     input_rows = [
         dbc.Row(
             [
@@ -190,6 +203,7 @@ def layout(mode=None, job_id=None, **kwargs):
         )
         for input_item in inputs
     ]
+
 
     textarea_rows = [
         dbc.Row(
@@ -211,6 +225,7 @@ def layout(mode=None, job_id=None, **kwargs):
         for textarea_item in textareas
     ]
 
+
     # Submit button
     submitButton = html.Div(
         html.Button(
@@ -231,7 +246,9 @@ def layout(mode=None, job_id=None, **kwargs):
         style={"textAlign": "center", "marginTop": "20px"},
     )
 
+
     form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
+
 
     return html.Div(
         style={
@@ -241,12 +258,13 @@ def layout(mode=None, job_id=None, **kwargs):
             "backgroundColor": "#bec2cb",
         },
 
-        
+
+       
    children=[
         html.Div(
             style={
                 "backgroundColor": "#bec2cb",
-                "height": "100vh",
+                "height": "200vh",
                 "padding": "0",
                 "color": "#1a1f61",
                 "fontFamily": "Garamond",
