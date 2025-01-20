@@ -4,9 +4,9 @@ import dash_bootstrap_components as dbc
 from db.ResumeDataAccess import ResumeDataAccess
 from beans.Resume import Resume
 
-# Registering the page
 dash.register_page(__name__, path_template="/resume/<mode>/<resume_id>")
 
+# Default resume data structure
 resume = {
     'resumeName': '',
     'studentID': 0,
@@ -15,7 +15,7 @@ resume = {
     'summary': 'Enter a summary',
 }
 
-# Custom styles for inputs and textareas
+# Standard input style
 input_style = {
     "backgroundColor": "#bec2cb",
     "color": "#1a1f61",
@@ -24,14 +24,15 @@ input_style = {
     "borderRadius": "5px",
     "padding": "5px",
     "border": "1px solid #1a1f61",
-    "overflowY": "auto",  # Make input scrollable if text overflows
+    "overflowY": "auto",
 }
 
+# Textarea style with scroll
 textarea_style = {
+    "width": "100%",
+    "height": "100px",
     "backgroundColor": "#bec2cb",
     "color": "#1a1f61",
-    "width": "100%",
-    "height": "200px",
     "borderRadius": "5px",
     "padding": "5px",
     "resize": "vertical",
@@ -39,43 +40,67 @@ textarea_style = {
     "border": "1px solid #1a1f61",
 }
 
-button_style = {
-    "backgroundColor": "#1a1f61",
-    "color": "white",
-    "padding": "10px 20px",
-    "border": "none",
-    "borderRadius": "5px",
-    "cursor": "pointer",
-    "fontSize": "16px",
-}
+# Navbar styling
+navbar = html.Div(
+    style={
+        "display": "flex",
+        "alignItems": "center",
+        "justifyContent": "space-between",
+        "padding": "10px 20px",
+        "backgroundColor": "#bec2cb",
+    },
+    children=[
+        html.A(
+            href="/",
+            children=html.Img(
+                src="/assets/logo.png",
+                style={
+                    "height": "80px",
+                    "width": "auto",
+                    "cursor": "pointer",
+                },
+            ),
+        ),
+        html.Nav(
+            style={
+                "display": "flex",
+                "gap": "20px",
+                "alignItems": "center",
+                "fontFamily": "Garamond",  # Ensure consistent font for navbar links
+            },
+            children=[
+                html.A("Home", href="/", className="navbar"),
+                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
+                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),
+            ]
+        ),
+    ],
+)
 
-form_style = {
-    "backgroundColor": "none",
-    "padding": "20px",
-}
-
-# Layout function
+# Layout function for Resume page
 def layout(mode=None, resume_id=None, **kwargs):
     global screenMode
     screenMode = mode
 
     global resumeID
     resumeID = resume_id
-    
+
     global resume
     readOnly = ''
     onlyRead = False
-    
+
+    # Set resume details for 'view' and 'edit' modes
     if resume_id is None:
         resume = {
             'resumeName': '',
-            'studentID': 0,
-            'pastExperience': 'Enter your past experiences',
-            'skillset': 'Enter your skillsets',
-            'summary': 'Enter a summary',
+            'studentID': '',
+            'pastExperience': '',
+            'skillset': '',
+            'summary': '',
         }
-    
-    if mode == "view" or mode == "edit":
+    elif mode in ("view", "edit"):
         resumeAccess = ResumeDataAccess()
         resumeTemp = resumeAccess.getResume(resume_id)
         resume['resumeName'] = resumeTemp.resumeName
@@ -83,136 +108,145 @@ def layout(mode=None, resume_id=None, **kwargs):
         resume['pastExperience'] = resumeTemp.pastExperience
         resume['skillset'] = resumeTemp.skillset
         resume['summary'] = resumeTemp.summary
-    
+
     if mode == 'view':
         readOnly = "readOnly"
         onlyRead = True
 
-    resumeName_input = dbc.Row(
-        [
-            dbc.Label("Resume Name", html_for="resumeName_row", width=2),
-            dbc.Col(
-                dbc.Input(
-                    type="text",
-                    id="resumeName_row",
-                    placeholder="Enter the Resume's Name",
-                    value=resume['resumeName'],
-                    readonly=readOnly,
-                    style=input_style,
+    # Form inputs
+    inputs = [
+        {
+            "label": "Resume Name",
+            "id": "resumeName_row",
+            "value": resume['resumeName'],
+            "placeholder": "Enter the Resume's Name",
+        },
+        {
+            "label": "Student ID",
+            "id": "studentID_row",
+            "value": resume['studentID'],
+            "placeholder": "Enter your Student ID",
+        },
+    ]
+
+    textareas = [
+        {
+            "label": "Past Experience",
+            "id": "pastExperience_row",
+            "value": resume['pastExperience'],
+            "placeholder": "Enter your past experiences",
+        },
+        {
+            "label": "Skillset",
+            "id": "skillset_row",
+            "value": resume['skillset'],
+            "placeholder": "Enter your skillsets",
+        },
+        {
+            "label": "Summary",
+            "id": "summary_row",
+            "value": resume['summary'],
+            "placeholder": "Enter a summary",
+        },
+    ]
+
+    input_rows = [
+        dbc.Row(
+            [
+                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61"}),
+                dbc.Col(
+                    dbc.Input(
+                        id=input_item["id"],
+                        value=input_item["value"],
+                        placeholder=input_item["placeholder"],
+                        style=input_style,
+                        readonly=onlyRead,
+                    ),
+                    width=10,
                 ),
-                width=10,
-            ),
-        ],
-        className="mb-3",
-    )
+            ],
+            className="mb-3",
+        )
+        for input_item in inputs
+    ]
 
-    studentID_input = dbc.Row(
-        [
-            dbc.Label("Student ID", html_for="studentID_row", width=2),
-            dbc.Col(
-                dbc.Input(
-                    type="text",
-                    id="studentID_row",
-                    placeholder="Enter your Student ID",
-                    value=resume['studentID'],
-                    readonly=readOnly,
-                    style=input_style,
+    textarea_rows = [
+        dbc.Row(
+            [
+                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61"}),
+                dbc.Col(
+                    dcc.Textarea(
+                        id=textarea_item["id"],
+                        value=textarea_item["value"],
+                        placeholder=textarea_item["placeholder"],
+                        style=textarea_style,
+                        readOnly=onlyRead,
+                    ),
+                    width=10,
                 ),
-                width=10,
-            ),
-        ],
-        className="mb-3",
-    )
+            ],
+            className="mb-3",
+        )
+        for textarea_item in textareas
+    ]
 
-    pastExperience_input = dbc.Row(
-        [
-            dbc.Label("Past Experience", html_for="pastExperience_row", width=2),
-            dbc.Col(
-                dcc.Textarea(
-                    id='pastExperience_row',
-                    value=resume['pastExperience'],
-                    readOnly=onlyRead,
-                    style=textarea_style,
-                ),
-            ),
-        ],
-        className="mb-3",
-    )
-
-    skillset_input = dbc.Row(
-        [
-            dbc.Label("Skillset", html_for="skillset_row", width=2),
-            dbc.Col(
-                dcc.Textarea(
-                    id='skillset_row',
-                    value=resume['skillset'],
-                    readOnly=onlyRead,
-                    style=textarea_style,
-                ),
-            ),
-        ],
-        className="mb-3",
-    )
-
-    summary_input = dbc.Row(
-        [
-            dbc.Label("Summary", html_for="summary_row", width=2),
-            dbc.Col(
-                dcc.Textarea(
-                    id='summary_row',
-                    value=resume['summary'],
-                    readOnly=onlyRead,
-                    style=textarea_style,
-                ),
-            ),
-        ],
-        className="mb-3",
-    )
-
-    message = html.Div(id="outMessage", children="")
-
+    # Submit button
     submitButton = html.Div(
-        html.Button("Submit", id='submit_button', className="button", n_clicks=0, style=button_style),
+        html.Button(
+            "Submit",
+            id="submit_button",
+            className="button",
+            n_clicks=0,
+            style={
+                "backgroundColor": "#1a1f61",
+                "color": "white",
+                "padding": "10px 20px",
+                "border": "none",
+                "borderRadius": "5px",
+                "cursor": "pointer",
+                "fontSize": "16px",
+            },
+        ),
         style={"textAlign": "center", "marginTop": "20px"},
     )
 
-    # Form layout for 'view' and 'edit' modes
-    if mode == 'view':
-        form = dbc.Form([resumeName_input, studentID_input, pastExperience_input, skillset_input, summary_input, message])
-    else:
-        form = dbc.Form([resumeName_input, studentID_input, pastExperience_input, skillset_input, summary_input, submitButton, message])
+    form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
 
     return html.Div(
-        style=form_style,
-        children=form
+        style={
+            "border": "10px double #1a1f61",
+            "padding": "0",
+            "boxSizing": "border-box",
+            "backgroundColor": "#bec2cb",
+        },
+        children=[
+            html.Div(
+                style={
+                    "backgroundColor": "#bec2cb",
+                    "height": "100vh",
+                    "padding": "0",
+                    "color": "#1a1f61",
+                    "fontFamily": "Garamond",
+                },
+                children=[
+                    navbar,
+                    html.H2("Create Resume", style={"textAlign": "center"}),
+                    html.Div(
+                        style={
+                            "textAlign": "center",
+                            "margin": "20px auto",
+                            "width": "95%",
+                            "backgroundColor": "none",
+                            "height": "calc(90vh - 140px)",
+                            "overflowY": "auto",
+                            "padding": "20px",
+                            "boxSizing": "border-box",
+                            "borderRadius": "5px",
+                            "border": "2px solid #1a1f61",
+                        },
+                        children=form,
+                    ),
+                ],
+            ),
+        ],
     )
-
-
-# Callback to handle form submission
-@callback(
-    Output('outMessage', "children"),
-    Input('submit_button', 'n_clicks'),
-    State('resumeName_row', 'value'),
-    State('studentID_row', 'value'),
-    State('pastExperience_row', 'value'),
-    State('skillset_row', 'value'),
-    State('summary_row', 'value'),
-    prevent_initial_call=True
-)
-def onSubmit(clicks, resumeName, studentID, pastExperience, skillset, summary):
-    dataAccess = ResumeDataAccess()
-
-    resume = Resume()
-    resume.resumeName = resumeName
-    resume.studentID = studentID
-    resume.pastExperience = pastExperience
-    resume.skillset = skillset
-    resume.summary = summary
-
-    if screenMode == "edit":
-        resume.id = resumeID
-        dataAccess.updateResume(resume)
-    else:
-        dataAccess.createResume(resume)
-
-    return "You have successfully created or updated the resume."

@@ -29,8 +29,8 @@ input_style = {
     "height": "40px",
     "borderRadius": "5px",
     "padding": "5px",
-    "border": "1px solid #1a1f61",  # Dark blue border for inputs
-    "overflowY": "auto",  # Make input scrollable if text overflows
+    "border": "1px solid #1a1f61",  
+    "overflowY": "auto", 
 }
 
 # Textarea style with scroll
@@ -41,8 +41,8 @@ textarea_style = {
     "color": "#1a1f61",
     "borderRadius": "5px",
     "padding": "5px",
-    "resize": "vertical",  # Allow vertical resizing for the textarea
-    "overflowY": "auto",  # Enable scrolling if content exceeds the height
+    "resize": "vertical",  
+    "overflowY": "auto",  
     "border": "1px solid #1a1f61",  # Dark blue border for textareas
 }
 
@@ -253,7 +253,7 @@ def layout(mode=None, job_id=None, **kwargs):
             },
             children=[
                 navbar,
-                html.H2("Resume", style={"textAlign": "center"}),
+                html.H2("Create Posting", style={"textAlign": "center"}),
                 html.Div(
                     style={
                         "textAlign": "center",
