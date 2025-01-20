@@ -82,7 +82,7 @@ class ResumeDataAccess:
             cursor_obj = connection_obj.cursor()
             sql = "UPDATE Resume SET ResumeName = ? WHERE id = ?" #, () + str(resume.id)
             print(sql)
-            cursor_obj.execute(sql,(str(resume.resumeName), resume.id)) 
+            cursor_obj.execute(sql,(str(resume.resumeName), str(resume.id))) 
         
             connection_obj.commit()
 
