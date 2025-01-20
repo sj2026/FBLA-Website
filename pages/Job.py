@@ -264,7 +264,7 @@ def layout(mode=None, job_id=None, **kwargs):
         html.Div(
             style={
                 "backgroundColor": "#bec2cb",
-                "height": "200vh",
+                "height": "100vh",
                 "padding": "0",
                 "color": "#1a1f61",
                 "fontFamily": "Garamond",
