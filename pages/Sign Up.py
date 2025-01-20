@@ -7,8 +7,8 @@ from beans.User import User
 # Keep this
 dash.register_page(__name__, path='/signup')
 
-# Layout
-layout = html.Div(
+def layout(**kwargs):
+    return html.Div(
     style={
         "backgroundColor": "#bec2cb",
         "height": "100vh",
@@ -184,7 +184,7 @@ layout = html.Div(
                         html.Div(
                             dbc.Button(
                                 "Submit",
-                                id="submit_button",
+                                id="submit_button_signUp",
                                 className="button",
                                 n_clicks=0,
                                 style={"backgroundColor":"#1a1f61",
@@ -203,7 +203,7 @@ layout = html.Div(
 # Callback for form submission
 @callback(
     Output("message", "children"),
-    Input("submit_button", "n_clicks"),
+    Input("submit_button_signUp", "n_clicks"),
     State("first_name_row", "value"),
     State("last_name_row", "value"),
     State("email_row", "value"),

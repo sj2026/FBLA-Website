@@ -228,7 +228,7 @@ def layout(mode = None, job_id = None, **kwargs):
 
 
     submitButton = html.Div(
-        html.Button("Submit", id='submit_button',  className = "button", n_clicks=0)
+        html.Button("Submit", id='submit_button_job',  className = "button", n_clicks=0)
         )
 
     
@@ -239,14 +239,14 @@ def layout(mode = None, job_id = None, **kwargs):
         form = dbc.Form([jobTitle_input, company_input, location_input, workHours_input, wageAmount_input, jobDescription_input, jobQualifications_input, benefits_input,keywords_input, submitButton, message])
         
         
-        
+         
     return html.Div(
-        form
+        form 
     )    
 
 @callback(
     Output('confirmation', "children"),
-    Input('submit_button', 'n_clicks'),
+    Input('submit_button_job', 'n_clicks'),
     State('jobTitle_row', 'value'),
     State('company_row', 'value'),
     State('location_row', 'value'),

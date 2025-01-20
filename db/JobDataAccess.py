@@ -55,7 +55,7 @@ class JobDataAccess:
             # Add condition for status
             if status != "All":
                 statement += " WHERE status = ?"
-                cursor_obj.execute(statement, (status,))
+                cursor_obj.execute(statement, (status))
             else:
                 cursor_obj.execute(statement)
 

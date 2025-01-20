@@ -89,10 +89,18 @@ class UserDataAccess:
             cursor_obj = connection_obj.cursor()
 
             # Use parameterized query for updates
-            sql = '''UPDATE User 
-                     SET status = ?, isAdmin = ? 
-                     WHERE id = ?'''
-            cursor_obj.execute(sql, (user.status, user.isAdmin, user.id))
+            #sql = '''UPDATE User 
+            #         SET status = ?, isAdmin = ? 
+            #         WHERE id = ?'''
+                     
+            sql = "UPDATE USER SET status = '" + user.status + "', isAdmin = '" + user.isAdmin +  "' WHERE id = " + str(user.id)
+   
+            print(user.status)
+            print(user.isAdmin)
+            print(user.id)
+            #cursor_obj.execute(sql, (user.status, str(user.isAdmin), user.id))
+            cursor_obj.execute(sql) 
+            
             connection_obj.commit()
 
         except Exception as e:
@@ -102,6 +110,32 @@ class UserDataAccess:
         finally:
             connection_obj.close()
                 
+                
+    def getUserStatus(self, userID):
+        connection_obj = ConnectionUtil.getConnection()
+         
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            # Base SQL query
+            statement = '''SELECT * FROM User WHERE Id = ''' + str(userID)
+            
+            cursor_obj.execute(statement)
+            
+            # Fetch results
+            output = cursor_obj.fetchall()
+
+            # Convert rows to User objects
+            for row in output:
+                return row[6]
+
+        except Exception as e:
+            print(f"Error in getUsers: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame in case of error
+
+        finally:
+            connection_obj.close()
+        
     def createUser(self, user):
         connection_obj = ConnectionUtil.getConnection()
         

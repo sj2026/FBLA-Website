@@ -1,33 +1,38 @@
 import dash
-from dash import html
+from dash import html, callback, Input, Output, State, dcc
 import dash_bootstrap_components as dbc
 
+
 #keep this
-dash.register_page(__name__, path='/home') 
+dash.register_page(__name__, path='/') 
 
-jobSearch_input = dbc.Row(
+
+def layout(**kwargs):
+
+    jobSearch_input = dbc.Row(
     [
-        dbc.Col(
-            dbc.Input(
-                type = "jobSearch",
-                id = "jobSearch_row",
-                placeholder = "Search For a Job Title, Company, etc",
-                className = "input"
-                
+            dbc.Col(
+                dbc.Input(
+                    type = "jobSearch",
+                    id = "jobSearch_row",
+                    placeholder = "Search For a Job Title, Company, etc",
+                    className = "input"
+                    
+                ),
+                width = 10
             ),
-            width = 10
-        ),
-    ],
-    className = "input",  
-)
-
-searchButton = html.Div(
-    html.Button("Search", id='search_button',  className="button", n_clicks=0)
+        ],
+        className = "input",  
     )
 
-form = dbc.Form([jobSearch_input, searchButton], style={"textAlign": "center"})
+    searchButton = html.Div(
+        html.Button("Search", id='search_button',  className="button", n_clicks=0)
+        )
 
-layout = html.Div(
+    form = dbc.Form([jobSearch_input, searchButton], style={"textAlign": "center"})
+
+
+    return html.Div(
     style={
         "backgroundColor": "#bec2cb", 
         "height": "97vh",
@@ -74,25 +79,8 @@ layout = html.Div(
             ]
         ),
 
+        html.Div(id="navbar"),
         
-        html.Nav(
-            style={
-              
-                "padding": "10px",
-                "display": "flex",
-                "justifyContent": "space-around",                 # style and look for navbar
-                "alignItems": "center",},
-                
-                 children=[
-                 html.A("Home", href="home", className="navbar"),
-                html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
-                html.A("Sign Up", href="signup", className="navbar"),
-                html.A("Post a Job", href="createposting", className="navbar"),
-                html.A("Contact Us", href="contactus", className="navbar"),]
-                
-                
-                ),
-
          html.Div(
             style={
                 "textAlign": "center",
@@ -112,6 +100,101 @@ layout = html.Div(
                 
             ]
         ),
-         form
+         form,
+         html.Div(id = "redirectToJobs") 
     ]
+    )
+
+@callback(
+    Output('navbar','children'),
+    Input('session','data'),
 )
+def initial_load(data):
+    session = data
+    if session and session['loggedIn']:
+        if (session['userStatus'] == "Student"):
+            return html.Nav(
+                style={
+                
+                    "padding": "10px",
+                    "display": "flex",
+                    "justifyContent": "space-around",                 # style and look for navbar
+                    "alignItems": "center",},
+                    
+                    children=[
+                    html.A("Home", href="/", className="navbar"),
+                    html.A("Student Profile", href="jobs", className="navbar"),                   # navbar buttons
+                    html.A("Sign Out", href="signup", className="navbar"),
+                    html.A("Resumes", href="createposting", className="navbar"),
+                    html.A("Apply for a job", href="contactus", className="navbar"),]
+                    
+                    
+                    ),
+            
+
+        elif (session['userStatus'] == "Employer"):
+            return html.Nav(
+                style={
+                
+                    "padding": "10px",
+                    "display": "flex",
+                    "justifyContent": "space-around",                 # style and look for navbar
+                    "alignItems": "center",},
+                    
+                    children=[
+                    html.A("Home", href="/", className="navbar"),
+                    html.A("Create Job Posting", href="jobs", className="navbar"),                   # navbar buttons
+                    html.A("Sign Out", href="signup", className="navbar"),
+                    html.A("View Job Applications", href="createposting", className="navbar"),
+                    html.A("Contact Us", href="contactus", className="navbar"),]
+                    
+                    
+                    ),
+
+        elif (session['userStatus'] == "Admin"):
+            return html.Nav(
+                style={
+                
+                    "padding": "10px",
+                    "display": "flex",
+                    "justifyContent": "space-around",                 # style and look for navbar
+                    "alignItems": "center",},
+                    
+                    children=[
+                    html.A("Home", href="/", className="navbar"),
+                    html.A("View Users", href="jobs", className="navbar"),                   # navbar buttons
+                    html.A("Sign Out", href="signup", className="navbar"),
+                    html.A("View Job Postings", href="createposting", className="navbar"),
+                    html.A("Contact Us", href="contactus", className="navbar"),]
+                    
+                    
+                    ),
+    else:
+        return html.Nav(
+                style={
+                
+                    "padding": "10px",
+                    "display": "flex",
+                    "justifyContent": "space-around",                 # style and look for navbar
+                    "alignItems": "center",},
+                    
+                    children=[
+                    html.A("Home", href="/", className="navbar"),
+                    html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
+                    html.A("Sign Up", href="signup", className="navbar"),
+                    html.A("Post a Job", href="createposting", className="navbar"),
+                    html.A("Contact Us", href="contactus", className="navbar"),]
+                    
+                    
+                    ),
+
+
+@callback(
+    Output("redirectToJobs", 'children'),
+    Input('search_button', 'n_clicks'),
+    State('jobSearch_row', 'value'),
+    prevent_initial_call=True, 
+)
+
+def onSearch(clicks, searchTerm):
+    return dcc.Location(pathname="/viewposting/"+ str(searchTerm), id="location_JobID")
