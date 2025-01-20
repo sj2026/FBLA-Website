@@ -28,7 +28,7 @@ layout = html.Div(
                 {'label': 'All Users', 'value': 'All'},
                 {'label': 'New Users', 'value': 'New'},
                 {'label': 'All Students', 'value': 'Student'},
-                {'label': 'All Employees', 'value': 'Employee'},
+                {'label': 'All Employers', 'value': 'Employer'},
             ],
             value='New',
             id='dropDownMenu',
@@ -41,7 +41,9 @@ layout = html.Div(
         html.Div(
             dash_table.DataTable(
                 id='Usertable',
-                data=df.to_dict('records'),
+                #style_data = {'border': 'none'},
+            #style_header = {'display': 'none'},
+            data=df.to_dict('records'),
                 columns=[
                     {"id": 'id', "name": "User ID", 'editable': False},
                     {"id": 'firstName', "name": "User First Name", 'editable': False},
@@ -63,7 +65,7 @@ layout = html.Div(
                         'options': [
                             {'label': "New", 'value': 'New'},
                             {'label': "Student", 'value': 'Student'},
-                            {'label': "Employee", 'value': 'Employee'}
+                            {'label': "Employer", 'value': 'Employer'}
                         ]
                     }
                 },

@@ -1,7 +1,10 @@
 import dash
-from dash import Input, Output, html, State, callback
+from dash import  Input, Output, html, State, callback, dcc
 import dash_bootstrap_components as dbc
 from db.UserDataAccess import UserDataAccess
+from beans.User import User
+from db import ConnectionUtil
+from beans.Session import Session
 
 # Register the page
 dash.register_page(__name__, path="/signin")
@@ -133,6 +136,7 @@ layout = html.Div(
                         ),
                     ]
                 ),
+                html.Div(id = "redirectOutput")
             ],
         ),
     ],
@@ -140,17 +144,32 @@ layout = html.Div(
 
 # Callback for form submission
 @callback(
-    Output("finalMessage", "children"),
-    Input("submit_button", "n_clicks"),
-    State("username_row", "value"),
-    State("password_row", "value"),
-    prevent_initial_call=True,
+    [Output('session', 'data'), Output("redirectOutput", 'children')],
+    Input('submit_button_Signin', 'n_clicks'),
+    State('password_input', 'value'),
+    State('username_input', 'value'),
+    prevent_initial_call = True,
+
 )
 def onSubmit(clicks, username, password):
     dataAccess = UserDataAccess()
-    result = dataAccess.doesUserExist(username, password)
+    if (username):
+        result = dataAccess.doesUserExist(username,password)
+        
+        if (result > 0):
+            session = Session()
+            session.id = result
+            session.userStatus = dataAccess.getUserStatus(result)
+            session.loggedIn = True
+            return [session.to_dict(), dcc.Location(pathname="/", id="locationID")]
+        
+        
+    session = Session()
+    session.loggedIn = False
+    return [session.to_dict(), ""]
+    
+     
+#if __name__ == '__main__':
+#    app.run(debug=True)
+  
 
-    if result > 0:
-        return "You have been signed in!"
-    else:
-        return "Login failed. Check your username, password, or sign up."

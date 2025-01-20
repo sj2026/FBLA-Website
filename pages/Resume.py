@@ -1,10 +1,15 @@
 import dash
-from dash import Input, Output, html, State, callback, dcc
+from dash import  Input, Output, html, State, callback, dcc
 import dash_bootstrap_components as dbc
 from db.ResumeDataAccess import ResumeDataAccess
 from beans.Resume import Resume
 
+<<<<<<< HEAD
 dash.register_page(__name__, path_template="/resume/<mode>/<resume_id>")
+=======
+#app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+dash.register_page(__name__, path_template = "/resume/<mode>/<resume_id>")
+>>>>>>> 22d810a160b1d39e509d7ad6fbb0075682f55579
 
 # Default resume data structure
 resume = {
