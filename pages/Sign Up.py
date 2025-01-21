@@ -9,198 +9,202 @@ dash.register_page(__name__, path='/signup')
 
 def layout(**kwargs):
     return html.Div(
-    style={
-        "backgroundColor": "#bec2cb",
-        "height": "100vh",
-        "padding": "0",
-        "color": "#1a1f61",
-        "margin": "0",
-        "border": "10px double #1a1f61",
-        "overflow": "hidden",
-        "boxSizing": "border-box",
-        "fontFamily": "Garamond",
-    },
-    children=[
-        # Header with logo and navbar
-        html.Div(
-            style={
-                "display": "flex",
-                "alignItems": "center",
-                "justifyContent": "space-between",
-                "padding": "10px 20px",
-                "backgroundColor": "#bec2cb",
-            },
-            children=[
-                # Logo
-                html.A(
-                    href="/",
-                    children=html.Img(
-                        src="/assets/logo.png",
-                        style={
-                            "height": "80px",
-                            "width": "auto",
-                            "cursor": "pointer",
-                        },
+        style={
+            "backgroundColor": "#bec2cb",
+            "height": "100vh",
+            "padding": "0",
+            "color": "#1a1f61",
+            "margin": "0",
+            "border": "10px double #1a1f61",
+            "overflow": "hidden",
+            "boxSizing": "border-box",
+            "fontFamily": "Garamond",
+        },
+        children=[
+            # Header with logo and navbar
+            html.Div(
+                style={
+                    "display": "flex",
+                    "alignItems": "center",
+                    "justifyContent": "space-between",
+                    "padding": "10px 20px",
+                    "backgroundColor": "#bec2cb",
+                },
+                children=[
+                    # Logo
+                    html.A(
+                        href="/",
+                        children=html.Img(
+                            src="/assets/logo.png",
+                            style={
+                                "height": "80px",
+                                "width": "auto",
+                                "cursor": "pointer",
+                            },
+                        ),
                     ),
-                ),
-           html.Nav(
-            style={
-              
-                "padding": "10px",
-                "display": "flex",
-                "justifyContent": "space-around", 
-                                "gap":"20px",                # style and look for navbar
-                "alignItems": "center",},
-                
-                 children=[
-            html.A("Home", href="/", className="navbar"),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),                   # navbar buttons
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),]
-                ),
-            ],
-        ),
+                    html.Nav(
+                        style={
+                            "padding": "10px",
+                            "display": "flex",
+                            "justifyContent": "space-around", 
+                            "gap": "20px",  # style and look for navbar
+                            "alignItems": "center",
+                        },
+                        children=[
+                            html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
+                            html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                            html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
+                            html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
+                            html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                        ]
+                    ),
+                ],
+            ),
 
-        # Form Section
-        html.Div(
-            style={
-                "textAlign": "center",
-                "position": "absolute",
-                "top": "53%",
-                "left": "50%",
-                "transform": "translate(-50%, -50%)",
-                "width": "95%",
-                "backgroundColor": "none",
-               
-            },
-            children=[
-              html.H2("Sign Up", style={"color": "#1a1f61",}),  
-                dbc.Form(
-                    [
-                        dbc.Row(
-                            [
-                                dbc.Label("First Name", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="text",
-                                        id="first_name_row",
-                                        placeholder="Enter your first name",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
+            html.Div(
+                style={
+                    "textAlign": "center",
+                    "position": "absolute",
+                    "top": "55%",
+                    "left": "50%",
+                    "transform": "translate(-50%, -50%)",
+                    "width": "95%",
+                    "backgroundColor": "none",
+                },
+                children=[
+                    html.H2("Sign Up", style={"color": "#1a1f61", "fontSize": "3vw"}),  
+                    dbc.Form(
+                        [
+                            dbc.Row(
+                                [
+                                    dbc.Label("First Name", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="text",
+                                            id="first_name_row",
+                                            placeholder="Enter your first name",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
                                     ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Label("Last Name", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="text",
-                                        id="last_name_row",
-                                        placeholder="Enter your last name",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
-
-                                    ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Label("Email", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="email",
-                                        id="email_row",
-                                        placeholder="Enter your email",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
-                                    ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Label("Phone Number", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="tel",
-                                        id="phone_number_row",
-                                        placeholder="Enter your phone number",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
-                                    ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Label("Password", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="password",
-                                        id="password_row",
-                                        placeholder="Create your password",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
-                                    ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        dbc.Row(
-                            [
-                                dbc.Label("Username", width=3),
-                                dbc.Col(
-                                    dbc.Input(
-                                        type="text",
-                                        id="username_row",
-                                        placeholder="Create your username",
-                                        style={"backgroundColor":"#bec2cb",
-                                               "color":"#1a1f61",
-                                               "borderColor":"#1a1f61",},
-                                    ),
-                                    width=8,
-                                ),
-                            ],
-                            className="mb-3",
-                        ),
-                        html.Div(
-                            dbc.Button(
-                                "Submit",
-                                id="submit_button_signUp",
-                                className="button",
-                                n_clicks=0,
-                                style={"backgroundColor":"#1a1f61",
-                                       "color":"white"},
+                                ],
+                                className="mb-3",
                             ),
-                            style={"textAlign": "center"},
-                        ),
-                        html.Div(id="message", style={"marginTop": "10px", "color": "#1a1f61"}),
-                    ]
-                ),
-            ],
-        ),
-    ],
-)
+                            dbc.Row(
+                                [
+                                    dbc.Label("Last Name", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="text",
+                                            id="last_name_row",
+                                            placeholder="Enter your last name",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
+                                    ),
+                                ],
+                                className="mb-3",
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Label("Email", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="email",
+                                            id="email_row",
+                                            placeholder="Enter your email",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
+                                    ),
+                                ],
+                                className="mb-3",
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Label("Phone Number", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="tel",
+                                            id="phone_number_row",
+                                            placeholder="Enter your phone number",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
+                                    ),
+                                ],
+                                className="mb-3",
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Label("Password", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="password",
+                                            id="password_row",
+                                            placeholder="Create your password",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
+                                    ),
+                                ],
+                                className="mb-3",
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Label("Username", width=3, style={"fontSize": "1.5vw"}),
+                                    dbc.Col(
+                                        dbc.Input(
+                                            type="text",
+                                            id="username_row",
+                                            placeholder="Create your username",
+                                            style={"backgroundColor": "#bec2cb",
+                                                   "color": "#1a1f61",
+                                                   "borderColor": "#1a1f61",
+                                                   "fontSize": "1.5vw"},
+                                        ),
+                                        width=8,
+                                    ),
+                                ],
+                                className="mb-3",
+                            ),
+                            html.Div(
+                                dbc.Button(
+                                    "Submit",
+                                    id="submit_button_signUp",
+                                    className="button",
+                                    n_clicks=0,
+                                    style={"backgroundColor": "#1a1f61",
+                                           "color": "white",
+                                           "fontSize": "1.5vw"},
+                                ),
+                                style={"textAlign": "center"},
+                            ),
+                            html.Div(id="message", style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"}),
+                        ]
+                    ),
+                ],
+            ),
+        ],
+    )
 
-# Callback for form submission
+
 @callback(
     Output("message", "children"),
     Input("submit_button_signUp", "n_clicks"),
