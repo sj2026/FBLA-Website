@@ -1,12 +1,8 @@
 import dash
-from dash import Input, Output, html, State, callback, dcc
+from dash import html
 import dash_bootstrap_components as dbc
-from db.UserDataAccess import UserDataAccess
-from beans.User import User
-from db import ConnectionUtil
-from beans.Session import Session
 
-dash.register_page(__name__, path="/signin")
+dash.register_page(__name__, path='/profile')
 
 layout = html.Div(
     style={
@@ -21,7 +17,6 @@ layout = html.Div(
         "fontFamily": "Garamond",
     },
     children=[
-        # Header with logo and navbar
         html.Div(
             style={
                 "display": "flex",
@@ -31,7 +26,6 @@ layout = html.Div(
                 "backgroundColor": "#bec2cb",
             },
             children=[
-                # Logo
                 html.A(
                     href="/",
                     children=html.Img(
@@ -43,7 +37,6 @@ layout = html.Div(
                         },
                     ),
                 ),
-                # Navbar
                 html.Nav(
                     style={
                         "padding": "10px",
@@ -62,7 +55,6 @@ layout = html.Div(
                 ),
             ],
         ),
-
         html.Div(
             style={
                 "textAlign": "center",
@@ -74,22 +66,22 @@ layout = html.Div(
                 "backgroundColor": "none",
             },
             children=[
-                html.H2("Sign In", style={"color": "#1a1f61", "fontSize": "3vw"}),
+                html.H2("Your Profile", style={"color": "#1a1f61", "fontSize": "3vw"}),  
                 dbc.Form(
                     [
                         dbc.Row(
                             [
-                                dbc.Label("Username", width=3, style={"fontSize": "1.5vw"}),
+                                dbc.Label("Full Name", width=3, style={"fontSize": "1.5vw"}),
                                 dbc.Col(
                                     dbc.Input(
                                         type="text",
-                                        id="username_row",
-                                        placeholder="Enter your username",
+                                        id="name-input",
+                                        placeholder="Enter your full name",
                                         style={
                                             "backgroundColor": "#bec2cb",
                                             "color": "#1a1f61",
                                             "borderColor": "#1a1f61",
-                                            "fontSize": "1.5vw",
+                                            "fontSize": "1.5vw",  
                                         },
                                     ),
                                     width=8,
@@ -99,17 +91,17 @@ layout = html.Div(
                         ),
                         dbc.Row(
                             [
-                                dbc.Label("Password", width=3, style={"fontSize": "1.5vw"}),
+                                dbc.Label("Email", width=3, style={"fontSize": "1.5vw"}),
                                 dbc.Col(
                                     dbc.Input(
-                                        type="password",
-                                        id="password_row",
-                                        placeholder="Enter your password",
+                                        type="email",
+                                        id="email-input",
+                                        placeholder="Enter your email",
                                         style={
                                             "backgroundColor": "#bec2cb",
                                             "color": "#1a1f61",
                                             "borderColor": "#1a1f61",
-                                            "fontSize": "1.5vw",
+                                            "fontSize": "1.5vw", 
                                         },
                                     ),
                                     width=8,
@@ -117,52 +109,44 @@ layout = html.Div(
                             ],
                             className="mb-3",
                         ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Resumes", width=3, style={"fontSize": "1.5vw"}),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="resume-input",
+                                        placeholder="Enter resume title",
+                                        style={
+                                            "backgroundColor": "#bec2cb",
+                                            "color": "#1a1f61",
+                                            "borderColor": "#1a1f61",
+                                            "fontSize": "1.5vw", 
+                                        },
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        html.Ul(id="resume-list", style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"}), 
                         html.Div(
                             dbc.Button(
-                                "Submit",
-                                id="submit_button",
+                                "Save Profile",
+                                id="save-profile-btn",
                                 className="button",
                                 n_clicks=0,
                                 style={
                                     "backgroundColor": "#1a1f61",
                                     "color": "white",
-                                    "fontSize": "1.5vw",
+                                    "fontSize": "1.5vw",  
                                 },
                             ),
-                            style={"textAlign": "center"},
-                        ),
-                        html.Div(
-                            id="finalMessage",
-                            style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"},
+                            style={"textAlign": "center", "marginTop": "20px"},
                         ),
                     ]
                 ),
-                html.Div(id="redirectOutput")
             ],
         ),
     ],
 )
-
-
-@callback(
-    [Output('session', 'data'), Output("redirectOutput", 'children')],
-    Input('submit_button_Signin', 'n_clicks'),
-    State('password_input', 'value'),
-    State('username_input', 'value'),
-    prevent_initial_call=True,
-)
-def onSubmit(clicks, username, password):
-    dataAccess = UserDataAccess()
-    if username:
-        result = dataAccess.doesUserExist(username, password)
-
-        if result > 0:
-            session = Session()
-            session.id = result
-            session.userStatus = dataAccess.getUserStatus(result)
-            session.loggedIn = True
-            return [session.to_dict(), dcc.Location(pathname="/", id="locationID")]
-
-    session = Session()
-    session.loggedIn = False
-    return [session.to_dict(), ""]
