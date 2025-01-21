@@ -4,11 +4,8 @@ import dash_bootstrap_components as dbc
 from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 
-
 dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
 
-
-# Default job data structure
 job = {
     "id": 0,
     "title": '',
@@ -23,7 +20,6 @@ job = {
     'status': '',
 }
 
-
 # Standard input style
 input_style = {
     "backgroundColor": "#bec2cb",
@@ -34,8 +30,8 @@ input_style = {
     "padding": "5px",
     "border": "1px solid #1a1f61",  
     "overflowY": "auto",
+    "fontSize": "1.5vw",  # Added responsive font size
 }
-
 
 # Textarea style with scroll
 textarea_style = {
@@ -47,11 +43,10 @@ textarea_style = {
     "padding": "5px",
     "resize": "vertical",  
     "overflowY": "auto",  
-    "border": "1px solid #1a1f61",  # Dark blue border for textareas
+    "border": "1px solid #1a1f61",  
+    "fontSize": "1.5vw",  # Added responsive font size
 }
 
-
-# Navbar styling
 navbar = html.Div(
     style={
         "display": "flex",
@@ -77,36 +72,31 @@ navbar = html.Div(
                 "display": "flex",
                 "gap": "20px",
                 "alignItems": "center",
-                "fontFamily": "Garamond",  # Ensure consistent font for navbar links
+                "fontFamily": "Garamond", 
             },
             children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),
+                html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
             ]
         ),
     ],
 )
-
 
 # Layout function for Job Posting page
 def layout(mode=None, job_id=None, **kwargs):
     global screenMode
     screenMode = mode
 
-
     global jobID
     jobID = job_id
-
 
     global job
     readOnly = ''
     onlyRead = False
 
-
-    # Set job details for 'view' and 'edit' modes
     if job_id is None:
         for key in job:
             job[key] = '' if key != 'id' else 0
@@ -115,13 +105,10 @@ def layout(mode=None, job_id=None, **kwargs):
         jobTemp = jobAccess.getJob(job_id)
         job.update(vars(jobTemp))
 
-
     if mode == 'view':
         readOnly = "readOnly"
         onlyRead = True
 
-
-    # Form inputs
     inputs = [
         {
             "label": "Job Title",
@@ -155,7 +142,6 @@ def layout(mode=None, job_id=None, **kwargs):
         },
     ]
 
-
     textareas = [
         {
             "label": "Job Description",
@@ -183,11 +169,10 @@ def layout(mode=None, job_id=None, **kwargs):
         },
     ]
 
-
     input_rows = [
         dbc.Row(
             [
-                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61"}),  # Dark blue label
+                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),  # Added responsive font size
                 dbc.Col(
                     dbc.Input(
                         id=input_item["id"],
@@ -204,11 +189,10 @@ def layout(mode=None, job_id=None, **kwargs):
         for input_item in inputs
     ]
 
-
     textarea_rows = [
         dbc.Row(
             [
-                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61"}),  # Dark blue label
+                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),  # Added responsive font size
                 dbc.Col(
                     dcc.Textarea(
                         id=textarea_item["id"],
@@ -225,7 +209,6 @@ def layout(mode=None, job_id=None, **kwargs):
         for textarea_item in textareas
     ]
 
-
     # Submit button
     submitButton = html.Div(
         html.Button(
@@ -240,15 +223,13 @@ def layout(mode=None, job_id=None, **kwargs):
                 "border": "none",
                 "borderRadius": "5px",
                 "cursor": "pointer",
-                "fontSize": "16px",
+                "fontSize": "1.5vw",  # Added responsive font size
             },
         ),
         style={"textAlign": "center", "marginTop": "20px"},
     )
 
-
     form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
-
 
     return html.Div(
         style={
@@ -257,37 +238,34 @@ def layout(mode=None, job_id=None, **kwargs):
             "boxSizing": "border-box",
             "backgroundColor": "#bec2cb",
         },
-
-
-       
-   children=[
-        html.Div(
-            style={
-                "backgroundColor": "#bec2cb",
-                "height": "100vh",
-                "padding": "0",
-                "color": "#1a1f61",
-                "fontFamily": "Garamond",
-            },
-            children=[
-                navbar,
-                html.H2("Create Posting", style={"textAlign": "center"}),
-                html.Div(
-                    style={
-                        "textAlign": "center",
-                        "margin": "20px auto",
-                        "width": "95%",
-                        "backgroundColor": "none",
-                        "height": "calc(90vh - 140px)",
-                        "overflowY": "auto",
-                        "padding": "20px",
-                        "boxSizing": "border-box",
-                        "borderRadius": "5px",
-                        "border": "2px solid #1a1f61",
-                    },
-                    children=form,
-                ),
-            ],
-        ),
-    ],
-)
+        children=[
+            html.Div(
+                style={
+                    "backgroundColor": "#bec2cb",
+                    "height": "100vh",
+                    "padding": "0",
+                    "color": "#1a1f61",
+                    "fontFamily": "Garamond",
+                },
+                children=[
+                    navbar,
+                    html.H2("Create Posting", style={"textAlign": "center", "fontSize": "3vw"}),  # Added responsive font size
+                    html.Div(
+                        style={
+                            "textAlign": "center",
+                            "margin": "20px auto",
+                            "width": "95%",
+                            "backgroundColor": "none",
+                            "height": "calc(90vh - 140px)",
+                            "overflowY": "auto",
+                            "padding": "20px",
+                            "boxSizing": "border-box",
+                            "borderRadius": "5px",
+                            "border": "2px solid #1a1f61",
+                        },
+                        children=form,
+                    ),
+                ],
+            ),
+        ],
+    )
