@@ -4,19 +4,15 @@ import dash_bootstrap_components as dbc
 from db.ResumeDataAccess import ResumeDataAccess
 from beans.Resume import Resume
 
-
 dash.register_page(__name__, path_template="/resume/<mode>/<resume_id>")
 
-
-# Default resume data structure
 resume = {
     'resumeName': '',
-    'studentID': 0,
-    'pastExperience': 'Enter your past experiences',
-    'skillset': 'Enter your skillsets',
-    'summary': 'Enter a summary',
+    'studentID':'',
+    'pastExperience': '',
+    'skillset': '',
+    'summary': '',
 }
-
 
 # Standard input style
 input_style = {
@@ -28,8 +24,8 @@ input_style = {
     "padding": "5px",
     "border": "1px solid #1a1f61",
     "overflowY": "auto",
+    "fontSize": "1.5vw",  
 }
-
 
 # Textarea style with scroll
 textarea_style = {
@@ -42,8 +38,8 @@ textarea_style = {
     "resize": "vertical",
     "overflowY": "auto",
     "border": "1px solid #1a1f61",
+    "fontSize": "1.5vw", 
 }
-
 
 # Navbar styling
 navbar = html.Div(
@@ -71,36 +67,31 @@ navbar = html.Div(
                 "display": "flex",
                 "gap": "20px",
                 "alignItems": "center",
-                "fontFamily": "Garamond",  # Ensure consistent font for navbar links
+                "fontFamily": "Garamond",  
             },
             children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),
+                html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
+                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
             ]
         ),
     ],
 )
 
-
-# Layout function for Resume page
+# Layout for Resume page
 def layout(mode=None, resume_id=None, **kwargs):
     global screenMode
     screenMode = mode
 
-
     global resumeID
     resumeID = resume_id
-
 
     global resume
     readOnly = ''
     onlyRead = False
 
-
-    # Set resume details for 'view' and 'edit' modes
     if resume_id is None:
         resume = {
             'resumeName': '',
@@ -118,13 +109,10 @@ def layout(mode=None, resume_id=None, **kwargs):
         resume['skillset'] = resumeTemp.skillset
         resume['summary'] = resumeTemp.summary
 
-
     if mode == 'view':
         readOnly = "readOnly"
         onlyRead = True
 
-
-    # Form inputs
     inputs = [
         {
             "label": "Resume Name",
@@ -139,7 +127,6 @@ def layout(mode=None, resume_id=None, **kwargs):
             "placeholder": "Enter your Student ID",
         },
     ]
-
 
     textareas = [
         {
@@ -162,11 +149,10 @@ def layout(mode=None, resume_id=None, **kwargs):
         },
     ]
 
-
     input_rows = [
         dbc.Row(
             [
-                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61"}),
+                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),
                 dbc.Col(
                     dbc.Input(
                         id=input_item["id"],
@@ -183,11 +169,10 @@ def layout(mode=None, resume_id=None, **kwargs):
         for input_item in inputs
     ]
 
-
     textarea_rows = [
         dbc.Row(
             [
-                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61"}),
+                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),
                 dbc.Col(
                     dcc.Textarea(
                         id=textarea_item["id"],
@@ -204,8 +189,6 @@ def layout(mode=None, resume_id=None, **kwargs):
         for textarea_item in textareas
     ]
 
-
-    # Submit button
     submitButton = html.Div(
         html.Button(
             "Submit",
@@ -219,15 +202,13 @@ def layout(mode=None, resume_id=None, **kwargs):
                 "border": "none",
                 "borderRadius": "5px",
                 "cursor": "pointer",
-                "fontSize": "16px",
+                "fontSize": "1.5vw",  
             },
         ),
         style={"textAlign": "center", "marginTop": "20px"},
     )
 
-
     form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
-
 
     return html.Div(
         style={
@@ -247,7 +228,7 @@ def layout(mode=None, resume_id=None, **kwargs):
                 },
                 children=[
                     navbar,
-                    html.H2("Create Resume", style={"textAlign": "center"}),
+                    html.H2("Create Resume", style={"textAlign": "center", "fontSize": "3vw"}), 
                     html.Div(
                         style={
                             "textAlign": "center",
