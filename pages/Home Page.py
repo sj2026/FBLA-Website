@@ -1,10 +1,8 @@
 import dash
 from dash import html
 
-
 # keep this
 dash.register_page(__name__, path='/')
-
 
 layout = html.Div(
     style={
@@ -23,7 +21,6 @@ layout = html.Div(
     },
     children=[
 
-
         html.Div(
             style={
                 "display": "flex",  
@@ -32,7 +29,6 @@ layout = html.Div(
                 "width": "100%",
             },
             children=[
-
 
                 html.A(
                     href="/",  # so that when you click the logo it redirects to the home page.
@@ -50,30 +46,37 @@ layout = html.Div(
                 html.H1(
                     "Sun Prairie West Job Search",
                     style={
-                        "fontSize": "40px",  # title
+                        "fontSize": "3.5vw",  # title
                         "textAlign": "left",
                     }
                 ),
             ]
         ),
 
-
+        # Navigation Bar
         html.Nav(
             style={
                 "padding": "10px",
                 "display": "flex",
                 "justifyContent": "space-around",  # style and look for navbar
                 "alignItems": "center",
+                "fontSize": "2vw",  
             },
             children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/new/none", className="navbar"),
+                html.A(
+                    "Home", href="/", className="navbar", 
+                    style={"fontSize": "1.5vw"}
+                ),
+                html.A(
+                    "Sign Up", href="/signup", className="navbar", 
+                    style={"fontSize": "1.5vw"}
+                ),
+                html.A(
+                    "Sign In", href="/signin", className="navbar", 
+                    style={"fontSize": "1.5vw"}
+                ),
             ]
         ),
-
 
         html.Div(
             style={
@@ -87,7 +90,7 @@ layout = html.Div(
                     "This is our website for Sun Prairie West High School students looking for a job. "
                     "Please sign up or sign in to view job postings.",
                     style={
-                        "fontSize": "20px",
+                        "fontSize": "1.5vw",  
                         "marginBottom": "20px",  # margin to space out text
                     }
                 ),
@@ -98,7 +101,7 @@ layout = html.Div(
                     style={
                         "display": "inline-block",
                         "padding": "10px 20px",
-                        "fontSize": "18px",
+                        "fontSize": "1.5vw",
                         "backgroundColor": "#1a1f61",  # so that the button looks right and is linked
                         "color": "white",
                         "borderRadius": "5px",
@@ -110,13 +113,12 @@ layout = html.Div(
             ],
         ),
        
-       
         html.Div(
             style={
                 "position": "absolute",
                 "top": "88%",            
-                "left": "5%",              
-                "width": "40%",                      # position and stuff for our mission section
+                "left": "5%",               # position and stuff for our mission section
+                "width": "40%",            
                 "display": "flex",        
                 "alignItems": "center",    
                 "justifyContent": "center",
@@ -143,8 +145,11 @@ layout = html.Div(
                 "padding": "20px",      
                 "borderRadius": "10px",  
             },
-            children=[
-                html.H2("Our Mission:", style={"fontSize": "35px", "color": "#549fc7"}),
+            children=[ 
+                html.H2("Our Mission:", style={
+                    "fontSize": "2.5vw",  
+                    "color": "#549fc7"
+                }),
                 html.H3(
                     "When we first entered high school as freshmen, finding a job was not an easy task. "
                     "There were limited resources for students to find a job, and the process of searching for job opportunities "
@@ -153,7 +158,7 @@ layout = html.Div(
                     "We want to make searching for a job easier than ever before, help them gain valuable work experience, and "
                     "ultimately help students find their lifelong passion.",
                     style={
-                        "fontSize": "20px",  
+                        "fontSize": "1.5vw",  
                         "width": "100%",              
                         "textAlign": "left",        
                         "marginTop": "20px",    
@@ -163,7 +168,7 @@ layout = html.Div(
             ]
         ),
 
-
+        # Quote From Our Principal 
         html.Div(
             style={
                 "position": "absolute",
@@ -175,38 +180,57 @@ layout = html.Div(
                 "borderRadius": "10px",  
             },
             children=[
-                html.H2("Yap Section 2:", style={"fontSize": "35px", "color": "#549fc7"}),                
+                html.H2("Quote From Our Principal:", style={
+                    "fontSize": "2.5vw",  
+                    "color": "#549fc7"
+                }),                
                 html.H3(
-                    " Add quote here from someone important and maybe talk to principal JP and get a quote from her.",
+                    "We asked our principal about her thoughts on job application websites like ours, and how they can benefit high school students looking for work. "
+                    "Here is what she had to say:",
                     style={
-                        "fontSize": "20px",  
+                        "fontSize": "1.5vw",  
                         "width": "100%",              
                         "textAlign": "left",        
                         "marginTop": "20px",    
                         "color": "white",    
                     }
                 ),
+                html.H3(
+                    '"Job application websites can help students learn about the incredible opportunities in our community, '
+                  '  not only for jobs they are qualified for now, but also for jobs that they may be interested in, in the future." ' ,
+                    style={
+                        "fontSize": "1.5vw",  
+                        "width": "100%",              
+                        "textAlign": "left",        
+                        "marginTop": "10px",    
+                        "color": "white",    
+                    }
+                ),
+                html.H4("- Principal Jennifer Ploeger, Sun Prairie West High School", style={
+                    "fontSize": "1.5vw",  
+                    "color": "white",
+                    "textAlign": "left",
+                    "marginTop": "10px",
+                })
             ]
         ),
-
-
        
         html.Div(
             style={
-               "position": "absolute",
-        "top": "190%",              
-        "right": "5%",            
-        "width": "40%",            
-        "display": "flex",                    #second image
-        "alignItems": "center",    
-        "justifyContent": "center",
-        "backgroundColor": "#1a1f61",
-        "padding": "10px",  
-        "borderRadius": "10px",
+                "position": "absolute",
+                "top": "190%",               # second image
+                "right": "5%",            
+                "width": "40%",            
+                "display": "flex",                    
+                "alignItems": "center",    
+                "justifyContent": "center",
+                "backgroundColor": "#1a1f61",
+                "padding": "10px",  
+                "borderRadius": "10px",
             },
             children=[
                 html.Img(
-                    src="/assets/temporaryimage.jpg",  
+                    src="/assets/professional.webp",  
                     style={
                         "width": "100%",  
                         "height": "auto",  
@@ -216,61 +240,56 @@ layout = html.Div(
             ]
         ),
 
-
-        # Footer
+        # Footer 
         html.Footer(
             style={
                 "backgroundColor": "#1a1f61",
                 "color": "white",
                 "textAlign": "center",
                 "padding": "20px",  
-                "fontSize": "18px",  
+                "fontSize": "2vw",  
                 "width": "100%",  
                 "borderTop": "5px solid #549fc7",
             },
            children=[
-    html.H3(
-        children=[
-            html.Span(
-                "Sun Prairie West Job Search | ",
-                style={
-                    "fontWeight": "bold",  # bold only for the title
-                }
-            ),
-            "2850 Ironwood Dr, Sun Prairie, WI 53590",  
-        ],
-        style={
-            "fontSize": "20px",  # footer text size
-            "color": "white",    # text color
-        }
-    ),
-             html.H4(
-    children=[
-        html.Span(
-            "Contact Us - ",
-            style={
-                "color": "white",
-                "fontWeight": "bold",  # Bold only for "Contact Us"
-            }
-        ),
-        "We're here to help! Feel free to reach out with any questions or inquiries.",
-    ],
-    style={
-        "color": "white",
-        "marginBottom": "5px",
-        "fontSize": "20px",
-    }
-),
-
-
-
-
-     
+                html.H3(
+                    children=[ 
+                        html.Span(
+                            "Sun Prairie West Job Search | ",
+                            style={
+                                "fontWeight": "bold",  # bold only for the title
+                            }
+                        ),
+                        "2850 Ironwood Dr, Sun Prairie, WI 53590",  
+                    ],
+                    style={
+                        "fontSize": "1.5vw",
+                        "color": "white",  
+                    }
+                ),
+                html.H4(
+                    children=[ 
+                        html.Span(
+                            "Contact Us - ",
+                            style={
+                                "color": "white",
+                                "fontWeight": "bold",  
+                            }
+                        ),
+                        "We're here to help! Feel free to reach out with any questions or inquiries.",
+                    ],
+                    style={
+                        "color": "white",
+                        "marginBottom": "5px",
+                        "fontSize": "1.5vw", 
+                    }
+                ),
                 html.A(
                     "Darsh Rewri",  
                     href="mailto:darsh.rewri@gmail.com",
                     className="footer",                       # links to the contact us for email
                     style={
+                        "fontSize": "1.5vw", 
                         "marginRight": "20px",
                     }
                 ),
@@ -278,10 +297,11 @@ layout = html.Div(
                     "Sanjay Jagadeesh",  
                     href="mailto:sanjayjagadeesh2021@gmail.com",  
                     className="footer",
+                    style={
+                        "fontSize": "1.5vw", 
+                    }
                 ),
             ],
         ),
     ]
 )
-
-
