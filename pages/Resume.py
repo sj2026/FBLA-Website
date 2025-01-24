@@ -70,17 +70,15 @@ navbar = html.Div(
                 "fontFamily": "Garamond",  
             },
             children=[
-                html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                 html.A("Home", href="/", className="navbar"),
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
             ]
         ),
     ],
 )
 
-# Layout for Resume page
+# layout for page
 def layout(mode=None, resume_id=None, **kwargs):
     global screenMode
     screenMode = mode

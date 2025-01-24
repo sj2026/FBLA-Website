@@ -1,6 +1,15 @@
 import dash
-from dash import html
+from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
+import flask
+
+user_data = {
+    "name": "John Wick",
+    "email": "john.wick@example.com",
+    "address": "123 Main St, Sun Prairie, USA",
+    "phone": "(123) 456-7890",
+    "resumes": ["Resume"]
+}
 
 dash.register_page(__name__, path='/profile')
 
@@ -46,11 +55,9 @@ layout = html.Div(
                         "alignItems": "center",
                     },
                     children=[
-                        html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
-                        html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
-                        html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
-                        html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
-                        html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+                        html.A("Home", href="/", className="navbar"),
+                        html.A("Sign Up", href="/signup", className="navbar"),
+                        html.A("Sign In", href="/signin", className="navbar"),
                     ]
                 ),
             ],
@@ -77,6 +84,7 @@ layout = html.Div(
                                         type="text",
                                         id="name-input",
                                         placeholder="Enter your full name",
+                                        value=user_data["name"],  # fill with user data
                                         style={
                                             "backgroundColor": "#bec2cb",
                                             "color": "#1a1f61",
@@ -97,6 +105,49 @@ layout = html.Div(
                                         type="email",
                                         id="email-input",
                                         placeholder="Enter your email",
+                                        value=user_data["email"],  # fill with user data
+                                        style={
+                                            "backgroundColor": "#bec2cb",
+                                            "color": "#1a1f61",
+                                            "borderColor": "#1a1f61",
+                                            "fontSize": "1.5vw", 
+                                        },
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Address", width=3, style={"fontSize": "1.5vw"}),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="address-input",
+                                        placeholder="Enter your address",
+                                        value=user_data["address"],  # fill with user data
+                                        style={
+                                            "backgroundColor": "#bec2cb",
+                                            "color": "#1a1f61",
+                                            "borderColor": "#1a1f61",
+                                            "fontSize": "1.5vw", 
+                                        },
+                                    ),
+                                    width=8,
+                                ),
+                            ],
+                            className="mb-3",
+                        ),
+                        dbc.Row(
+                            [
+                                dbc.Label("Phone Number", width=3, style={"fontSize": "1.5vw"}),
+                                dbc.Col(
+                                    dbc.Input(
+                                        type="text",
+                                        id="phone-input",
+                                        placeholder="Enter your phone number",
+                                        value=user_data["phone"],  # fill with user data
                                         style={
                                             "backgroundColor": "#bec2cb",
                                             "color": "#1a1f61",
@@ -129,7 +180,11 @@ layout = html.Div(
                             ],
                             className="mb-3",
                         ),
-                        html.Ul(id="resume-list", style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"}), 
+                        html.Ul(
+                            id="resume-list", 
+                            children=[html.Li(resume) for resume in user_data["resumes"]],  # put resumes here 
+                            style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"}
+                        ),
                         html.Div(
                             dbc.Button(
                                 "Save Profile",

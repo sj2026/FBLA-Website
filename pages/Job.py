@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 
-dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
+dash.register_page(__name__, path_template="/job/none/none")
 
 job = {
     "id": 0,
@@ -20,7 +20,7 @@ job = {
     'status': '',
 }
 
-# Standard input style
+# standard input style
 input_style = {
     "backgroundColor": "#bec2cb",
     "color": "#1a1f61",
@@ -30,10 +30,10 @@ input_style = {
     "padding": "5px",
     "border": "1px solid #1a1f61",  
     "overflowY": "auto",
-    "fontSize": "1.5vw",  # Added responsive font size
+    "fontSize": "1.5vw",  
 }
 
-# Textarea style with scroll
+# textarea style 
 textarea_style = {
     "width": "100%",
     "height": "100px",
@@ -44,7 +44,7 @@ textarea_style = {
     "resize": "vertical",  
     "overflowY": "auto",  
     "border": "1px solid #1a1f61",  
-    "fontSize": "1.5vw",  # Added responsive font size
+    "fontSize": "1.5vw",
 }
 
 navbar = html.Div(
@@ -75,11 +75,9 @@ navbar = html.Div(
                 "fontFamily": "Garamond", 
             },
             children=[
-                html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
+ html.A("Home", href="/", className="navbar"),
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
             ]
         ),
     ],
@@ -223,7 +221,7 @@ def layout(mode=None, job_id=None, **kwargs):
                 "border": "none",
                 "borderRadius": "5px",
                 "cursor": "pointer",
-                "fontSize": "1.5vw",  # Added responsive font size
+                "fontSize": "1.5vw",  
             },
         ),
         style={"textAlign": "center", "marginTop": "20px"},
@@ -249,7 +247,7 @@ def layout(mode=None, job_id=None, **kwargs):
                 },
                 children=[
                     navbar,
-                    html.H2("Create Posting", style={"textAlign": "center", "fontSize": "3vw"}),  # Added responsive font size
+                    html.H2("Create Posting", style={"textAlign": "center", "fontSize": "3vw"}),  
                     html.Div(
                         style={
                             "textAlign": "center",

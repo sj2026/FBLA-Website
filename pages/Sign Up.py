@@ -21,7 +21,7 @@ def layout(**kwargs):
             "fontFamily": "Garamond",
         },
         children=[
-            # Header with logo and navbar
+            # header with logo and navbar
             html.Div(
                 style={
                     "display": "flex",
@@ -31,7 +31,7 @@ def layout(**kwargs):
                     "backgroundColor": "#bec2cb",
                 },
                 children=[
-                    # Logo
+                    # logo
                     html.A(
                         href="/",
                         children=html.Img(
@@ -52,12 +52,10 @@ def layout(**kwargs):
                             "alignItems": "center",
                         },
                         children=[
-                            html.A("Home", href="/", className="navbar", style={"fontSize": "1.5vw"}),
-                            html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
-                            html.A("Sign Up", href="/signup", className="navbar", style={"fontSize": "1.5vw"}),
-                            html.A("Sign In", href="/signin", className="navbar", style={"fontSize": "1.5vw"}),
-                            html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar", style={"fontSize": "1.5vw"}),
-                        ]
+                          html.A("Home", href="/", className="navbar"),
+                html.A("Sign Up", href="/signup", className="navbar"),
+                html.A("Sign In", href="/signin", className="navbar"),
+            ]
                     ),
                 ],
             ),
