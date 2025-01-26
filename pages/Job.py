@@ -7,19 +7,6 @@ from beans.Job import Job
 dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
 
 # Default job data structure
-job = {
-    "id": 0,
-    "title": '',
-    "company": '',
-    'location': '',
-    'workHours': '',
-    'wageAmount': '',
-    'description': '',
-    'qualifications': '',
-    'benefits': '',
-    'keywords': '',
-    'status': '',
-}
 
 # Standard input style
 input_style = {
@@ -93,20 +80,34 @@ def layout(mode=None, job_id=None, **kwargs):
     global jobID
     jobID = job_id
 
-    global job
+    #global job
     readOnly = ''
     onlyRead = False
 
     # Set job details for 'view' and 'edit' modes
-    if job_id is None:
-        for key in job:
-            job[key] = '' if key != 'id' else 0
-    elif mode in ("view", "edit"):
+    job = {}
+    #print(job_id)
+    if job_id is None or job_id == "none" :
+        job = {
+            "id": 0,
+            "title": '',
+            "company": '',
+            'location': '',
+            'workHours': '',
+            'wageAmount': '',
+            'description': '',
+            'qualifications': '',
+            'benefits': '',
+            'keywords': '',
+            'status': '',
+        }
+
+    elif mode in ("view", "view_as_student", "edit"):
         jobAccess = JobDataAccess()
         jobTemp = jobAccess.getJob(job_id)
         job.update(vars(jobTemp))
 
-    if mode == 'view':
+    if mode == 'view' or mode == "view_as_student":
         readOnly = "readOnly"
         onlyRead = True
 
@@ -212,10 +213,10 @@ def layout(mode=None, job_id=None, **kwargs):
     ]
 
     # Submit button
-    submitButton = html.Div(
+    submitButton = html.Div([
         html.Button(
             "Submit",
-            id="submit_button",
+            id="submit_button_job",
             className="button",
             n_clicks=0,
             style={
@@ -228,10 +229,48 @@ def layout(mode=None, job_id=None, **kwargs):
                 "fontSize": "16px",
             },
         ),
+        html.Div(id = "confirmation", children = "")
+        ],
         style={"textAlign": "center", "marginTop": "20px"},
     )
 
-    form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
+    
+    # apply button
+    applyButton = html.Div([
+        html.Button(
+            "Apply",
+            id="apply_button_job",
+            className="button",
+            n_clicks=0,
+            style={
+                "backgroundColor": "#1a1f61",
+                "color": "white",
+                "padding": "10px 20px",
+                "border": "none",
+                "borderRadius": "5px",
+                "cursor": "pointer",
+                "fontSize": "16px",
+            },
+        ),
+        html.Div(id = "redirectToapply"),
+        ]
+        ,style={"textAlign": "center", "marginTop": "20px"},
+        
+    )
+
+    form = dbc.Form()
+    
+    if mode !="view" and mode !="view_as_student":
+        form = dbc.Form(input_rows + textarea_rows + [submitButton] )
+    if mode == "view_as_student":
+        form = dbc.Form(input_rows + textarea_rows + [applyButton] )
+    if mode == "view":
+        form = dbc.Form(input_rows + textarea_rows)
+
+
+
+
+    #form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
 
     return html.Div(
         style={
@@ -253,7 +292,7 @@ def layout(mode=None, job_id=None, **kwargs):
             },
             children=[
                 navbar,
-                html.H2("Resume", style={"textAlign": "center"}),
+                html.H2("Job Posting", style={"textAlign": "center"}),
                 html.Div(
                     style={
                         "textAlign": "center",
@@ -273,3 +312,66 @@ def layout(mode=None, job_id=None, **kwargs):
         ),
     ],
 )
+
+@callback(
+    Input('session','data'),
+)
+def initial_load(data):
+    #print(data)
+    global session 
+    session = data
+
+
+@callback(
+    Output('redirectToapply', "children"),
+    Input('apply_button_job', 'n_clicks'),
+    Input('session', 'data'),
+   prevent_initial_call = True
+)
+def onApply(clicks, data):
+    print("IN apply" + str(session))
+    return dcc.Location(pathname="/jobapplication/none/"+ str(jobID) + "/none", id="location_applicationID")
+    
+
+    
+@callback(
+    Output('confirmation', "children"),
+    Input('submit_button_job', 'n_clicks'),
+    State('jobTitle_row', 'value'),
+    State('company_row', 'value'),
+    State('location_row', 'value'),
+    State('workHours_row','value'),
+    State('wageAmount_row', 'value'),
+    State('jobDescription_row', 'value'),
+    State('jobQualifications_row', 'value'),
+    State('benefits_row', 'value'),
+    State('keywords_row', 'value'),
+    State('session', 'data'),
+    prevent_initial_call = True
+
+)
+
+def onSubmit(clicks, title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, data):
+    dataAccess = JobDataAccess()
+    session = data
+    
+    newJob = Job()
+    newJob.title = title
+    newJob.company = company
+    newJob.location = location
+    newJob.workHours = workHours
+    newJob.wageAmount = wageAmount
+    newJob.description = description
+    newJob.qualifications = qualifications
+    newJob.benefits = benefits
+    newJob.keywords = keywords
+    newJob.status = "New"
+    newJob.employerID = session['id']
+    
+    if (screenMode == "edit"):
+        newJob.id = jobID
+        dataAccess.updateJob(newJob)
+        return "Job edited successfully."
+    else:
+        dataAccess.createJob(newJob)
+        return "You have successfully created the job posting. Please wait for the admin to approve or decline the posting."

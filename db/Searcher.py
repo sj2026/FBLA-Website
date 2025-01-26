@@ -24,6 +24,8 @@ class Searcher:
                 job.description = row['description']
                 job.qualifications = row['qualifications']
                 job.benefits = row['benefits']
+                job.link = '[' + row['title'] + '](/job/view/' +  job.id + ")"
+                job.link_student = '[' + row['title'] + '](/job/view_as_student/' +  job.id + ")"
                 #job.keywords = row['keywords']
                 job.status = 'Approved'
                 jobList.append(job)

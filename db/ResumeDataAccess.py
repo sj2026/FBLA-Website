@@ -38,14 +38,14 @@ class ResumeDataAccess:
             connection_obj.close()
     
     
-    def getResumes(self, StudentID):
+    def getResumes(self, StudentID, format):
         connection_obj = ConnectionUtil.getConnection()
         resumeList = []
         
         try:
             cursor_obj = connection_obj.cursor()
 
-            statement = '''SELECT * FROM Resume where ID = ''' + StudentID + ''''''
+            statement = '''SELECT * FROM Resume where ID = ''' + str(StudentID) + ''''''
 
 
             cursor_obj.execute(statement)
@@ -62,9 +62,13 @@ class ResumeDataAccess:
                 resume.summary = row[5]
                 resumeList.append(resume)
             
-            df = pd.DataFrame.from_records([d.to_dict() for d in resumeList])
-            connection_obj.commit()
-            return df
+            if (format != "List"):
+                df = pd.DataFrame.from_records([d.to_dict() for d in resumeList])
+                connection_obj.commit()
+                return df
+
+            else:
+                return resumeList
 
         except Exception as e:
             print(e)

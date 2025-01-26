@@ -35,15 +35,17 @@ def layout(**kwargs):
     return html.Div(
     style={
         "backgroundColor": "#bec2cb",
-        "height": "100vh",
+        "minHeight": "300vh",
         "padding": "0",
-        "color": "#1a1f61",                  # for overall look of website
-        "margin":"0",
-        "border": "10px double #1a1f61 ",
-        "overflow": "hidden",
-        "boxSizing":"border-box",
-        "fontFamily":"Garamond",
-       
+        "color": "#1a1f61",    # for overall look and style of website
+        "margin": "0",
+        "border": "10px double #1a1f61",
+        "boxSizing": "border-box",
+        "fontFamily": "Garamond",
+        "display": "flex",    
+        "flexDirection": "column",
+        "height": "100%",      
+        "overflowY": "auto",  
     },
     children=[
 
@@ -52,19 +54,20 @@ def layout(**kwargs):
             style={
                 "display": "flex",  
                 "alignItems": "center",
-                "justifyContent": "center",    #for the logo and title to be inline
+                "justifyContent": "center",  # for the logo and title to be inline
                 "width": "100%",
             },
-                  children=[
-               
+            children=[
+
+
                 html.A(
-                    href="/",              # so that when you click the logo it redirects to home page.
+                    href="/",  # so that when you click the logo it redirects to the home page.
                     children=html.Img(
                         src="/assets/logo.png",
                         style={
                             "height": "100px",
                             "width": "auto",  
-                            "display": "inline",                   # logo and make it click
+                            "display": "inline",                   # logo and make it clickable
                             "marginRight": "20px",
                             "cursor": "pointer",  
                         }
@@ -73,38 +76,212 @@ def layout(**kwargs):
                 html.H1(
                     "Sun Prairie West Job Search",
                     style={
-                        "fontSize": "40px",                 # title
+                        "fontSize": "40px",  # title
                         "textAlign": "left",
                     }
                 ),
             ]
         ),
 
+
         html.Div(id="navbar"),
-        
-         html.Div(
+
+
+        html.Div(
             style={
                 "textAlign": "center",
-                "position": "absolute",
-                "top": "55%",                                     # so that the paragraph is in the right place
-                "left": "50%",
-                "transform": "translate(-50%, -50%)",
+                "position": "relative",     # spacing and scrollability for page
+                "paddingTop": "10%",  
+                "flex": "1",
             },
-              children=[
+            children=[
                 html.P(
                     "This is our website for Sun Prairie West High School students looking for a job. "
-                    "Please sign up to view job postings.",
+                    "Please sign up or sign in to view job postings.",
                     style={
                         "fontSize": "20px",
+                        "marginBottom": "20px",  # margin to space out text
                     }
                 ),
-                
+                form,
+                html.Div(id = "redirectToJobs"),
+            ],
+        ),
+       
+       
+        html.Div(
+            style={
+                "position": "absolute",
+                "top": "88%",            
+                "left": "5%",              
+                "width": "40%",                      # position and stuff for our mission section
+                "display": "flex",        
+                "alignItems": "center",    
+                "justifyContent": "center",
+            },
+            children=[
+                html.Img(
+                    src="/assets/logo.png",  
+                    style={
+                        "width": "97%",  
+                        "height": "auto",  
+                    }
+                ),
             ]
         ),
-         form,
-         html.Div(id = "redirectToJobs") 
-    ]
-    )
+       
+        # Our Mission Section
+        html.Div(
+            style={
+                "position": "absolute",
+                "top": "100%",            
+                "right": "5%",            
+                "width": "40%",            
+                "backgroundColor": "#1a1f61",  
+                "padding": "20px",      
+                "borderRadius": "10px",  
+            },
+            children=[
+                html.H2("Our Mission:", style={"fontSize": "35px", "color": "#549fc7"}),
+                html.H3(
+                    "When we first entered high school as freshmen, finding a job was not an easy task. "
+                    "There were limited resources for students to find a job, and the process of searching for job opportunities "
+                    "often felt overwhelming and time-consuming. We are determined to change that. With this website, our mission is to "
+                    "make finding a job easier and more accessible for current and future students at Sun Prairie West High School. "
+                    "We want to make searching for a job easier than ever before, help them gain valuable work experience, and "
+                    "ultimately help students find their lifelong passion.",
+                    style={
+                        "fontSize": "20px",  
+                        "width": "100%",              
+                        "textAlign": "left",        
+                        "marginTop": "20px",    
+                        "color": "white",    
+                    }
+                ),
+            ]
+        ),
+
+
+        html.Div(
+            style={
+                "position": "absolute",
+                "top": "190%",            
+                "left": "5%",          
+                "width": "40%",                                  # second section position and stuff
+                "backgroundColor": "#1a1f61",  
+                "padding": "20px",      
+                "borderRadius": "10px",  
+            },
+            children=[
+                html.H2("Yap Section 2:", style={"fontSize": "35px", "color": "#549fc7"}),                
+                html.H3(
+                    " Add quote here from someone important and maybe talk to principal JP and get a quote from her.",
+                    style={
+                        "fontSize": "20px",  
+                        "width": "100%",              
+                        "textAlign": "left",        
+                        "marginTop": "20px",    
+                        "color": "white",    
+                    }
+                ),
+            ]
+        ),
+
+
+       
+        html.Div(
+            style={
+               "position": "absolute",
+        "top": "190%",              
+        "right": "5%",            
+        "width": "40%",            
+        "display": "flex",                    #second image
+        "alignItems": "center",    
+        "justifyContent": "center",
+        "backgroundColor": "#1a1f61",
+        "padding": "10px",  
+        "borderRadius": "10px",
+            },
+            children=[
+                html.Img(
+                    src="/assets/jobfair.jpg",  
+                    style={
+                        "width": "100%",  
+                        "height": "auto",  
+                        "borderRadius":"10px",
+                    }
+                ),
+            ]
+        ),
+
+
+        # Footer
+        html.Footer(
+            style={
+                "backgroundColor": "#1a1f61",
+                "color": "white",
+                "textAlign": "center",
+                "padding": "20px",  
+                "fontSize": "18px",  
+                "width": "100%",  
+                "borderTop": "5px solid #549fc7",
+            },
+           children=[
+    html.H3(
+        children=[
+            html.Span(
+                "Sun Prairie West Job Search | ",
+                style={
+                    "fontWeight": "bold",  # bold only for the title
+                }
+            ),
+            "2850 Ironwood Dr, Sun Prairie, WI 53590",  
+        ],
+        style={
+            "fontSize": "20px",  # footer text size
+            "color": "white",    # text color
+        }
+    ),
+             html.H4(
+    children=[
+        html.Span(
+            "Contact Us - ",
+            style={
+                "color": "white",
+                "fontWeight": "bold",  # Bold only for "Contact Us"
+            }
+        ),
+        "We're here to help! Feel free to reach out with any questions or inquiries.",
+    ],
+    style={
+        "color": "white",
+        "marginBottom": "5px",
+        "fontSize": "20px",
+    }
+),
+
+
+
+
+     
+                html.A(
+                    "Darsh Rewri",  
+                    href="mailto:darsh.rewri@gmail.com",
+                    className="footer",                       # links to the contact us for email
+                    style={
+                        "marginRight": "20px",
+                    }
+                ),
+                html.A(
+                    "Sanjay Jagadeesh",  
+                    href="mailto:sanjayjagadeesh2021@gmail.com",  
+                    className="footer",
+                ),
+            ],
+        ), 
+    ], 
+),
+
 
 @callback(
     Output('navbar','children'),
@@ -133,7 +310,7 @@ def initial_load(data):
                     ),
             
 
-        elif (session['userStatus'] == "Employer"):
+        elif (session['userStatus'] == "Employee"):
             return html.Nav(
                 style={
                 
@@ -144,10 +321,11 @@ def initial_load(data):
                     
                     children=[
                     html.A("Home", href="/", className="navbar"),
-                    html.A("Create Job Posting", href="jobs", className="navbar"),                   # navbar buttons
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("View Job Applications", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),]
+                    html.A("Create Job Posting", href="/job/none/none", className="navbar"),                   # navbar buttons
+                    html.A("Sign Out", href="/", className="navbar"),
+                    html.A("View Postings", href="/viewcreations/" + str(session['id']), className="navbar"),
+                    html.A("Contact Us", href="/contactus", className="navbar"),
+                    ]
                     
                     
                     ),
@@ -180,11 +358,9 @@ def initial_load(data):
                     "alignItems": "center",},
                     
                     children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("View Jobs", href="jobs", className="navbar"),                   # navbar buttons
+                    html.A("Home", href="/", className="navbar"),                 # navbar buttons
                     html.A("Sign Up", href="signup", className="navbar"),
-                    html.A("Post a Job", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),]
+                    html.A("Sign in", href="createposting", className="navbar")]
                     
                     
                     ),

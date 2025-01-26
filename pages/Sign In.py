@@ -85,7 +85,7 @@ layout = html.Div(
                                 dbc.Col(
                                     dbc.Input(
                                         type="text",
-                                        id="username_row",
+                                        id="username_input",
                                         placeholder="Enter your username",
                                         style={
                                             "backgroundColor": "#bec2cb",
@@ -104,7 +104,7 @@ layout = html.Div(
                                 dbc.Col(
                                     dbc.Input(
                                         type="password",
-                                        id="password_row",
+                                        id="password_input",
                                         placeholder="Enter your password",
                                         style={
                                             "backgroundColor": "#bec2cb",
@@ -120,7 +120,7 @@ layout = html.Div(
                         html.Div(
                             dbc.Button(
                                 "Submit",
-                                id="submit_button",
+                                id="submit_button_Signin",
                                 className="button",
                                 n_clicks=0,
                                 style={
@@ -155,6 +155,7 @@ def onSubmit(clicks, username, password):
     dataAccess = UserDataAccess()
     if (username):
         result = dataAccess.doesUserExist(username,password)
+        #print(result)
         
         if (result > 0):
             session = Session()

@@ -19,13 +19,14 @@ def layout (searchTerm = None):
             data = df.to_dict('records'), 
             columns = [
                 #{"id": 'id', "name": "Job ID", 'editable' : False},
-                {"id": 'title', "name": "Job Title", 'editable' : False},
+                {"id": 'link_student', "name": "View Full Job Posting", 'editable' : False, 'presentation': 'markdown'},
                 {"id": 'company', "name": "Company Name", 'editable' : False},
                 {"id": 'location', "name": "Job Location", 'editable' : False},
                 {"id": 'description', "name": "Description", 'editable' : False},
                 {"id": 'workHours', "name": "Work Hours", 'editable' : False},
                 {"id": 'wageAmount', "name": "Wage Amount", 'editable' : False},
             ],
+
         
             style_as_list_view=True,
             style_data={

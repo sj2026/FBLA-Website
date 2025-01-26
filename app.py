@@ -7,18 +7,6 @@ app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP]
 app.layout = html.Div(
 
            
-    style={
-        "backgroundColor": "#bec2cb", 
-        "height": "97vh",
-        "padding": "0",
-        "color": "#1a1f61",                  # for overall look of website
-        "margin":"0",
-        "border": "10px double #1a1f61 ",
-        "overflow": "hidden",
-        "boxSizing":"border-box",
-        "fontFamily":"Garamond",
-        
-    },
     
     children=[
 

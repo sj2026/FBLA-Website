@@ -89,6 +89,51 @@ class JobDataAccess:
         finally:
             connection_obj.close()
 
+    def getEmployerJobs(self, employerID):
+        connection_obj = ConnectionUtil.getConnection()
+        jobList = []
+        
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            # Base SQL statement
+            statement = '''SELECT * FROM JobPosting Where EmployerID = ''' + str(employerID)
+            
+            # Add condition for status
+            cursor_obj.execute(statement)
+
+            # Fetch results
+            output = cursor_obj.fetchall()
+
+            # Convert results to Job objects
+            for row in output:
+                job = Job()
+                job.id = row[0]
+                job.title = row[1]
+                job.company = row[2]
+                job.location = row[3]
+                job.workHours = row[4]
+                job.wageAmount = row[5]
+                job.description = row[6]
+                job.qualifications = row[7]
+                job.benefits = row[8]
+                job.keywords = row[9]
+                job.status = row[10]
+                job.employerID = row[11]
+                job.link_applications = '[Applications](/viewallapplications/' + str(job.id) + ")"
+                jobList.append(job)
+                
+            # Convert to DataFrame
+            df = pd.DataFrame.from_records([d.to_dict() for d in jobList])
+            return df
+
+        except Exception as e:
+            print(f"Error in getEmployerJobs: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame in case of error
+
+        finally:
+            connection_obj.close()
+    
     def updateJob(self, job):
         connection_obj = ConnectionUtil.getConnection()
         
@@ -111,10 +156,10 @@ class JobDataAccess:
         try:
             cursor_obj = connection_obj.cursor()
             sql = '''INSERT INTO JobPosting 
-                     (title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, status) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+                     (title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, status, employerID) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
             cursor_obj.execute(sql, (job.title, job.company, job.location, job.workHours, job.wageAmount, 
-                                     job.description, job.qualifications, job.benefits, job.keywords, job.status))
+                                     job.description, job.qualifications, job.benefits, job.keywords, job.status, job.employerID))
             connection_obj.commit()
 
         except Exception as e:

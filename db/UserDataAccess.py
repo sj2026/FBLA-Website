@@ -48,7 +48,7 @@ class UserDataAccess:
         finally:
             connection_obj.close()
           
-    def doesUserExist(self, username, password):
+    def doesUserExist(self, password, username):
         connection_obj = ConnectionUtil.getConnection()
         userList = []
          
@@ -95,9 +95,9 @@ class UserDataAccess:
                      
             sql = "UPDATE USER SET status = '" + user.status + "', isAdmin = '" + user.isAdmin +  "' WHERE id = " + str(user.id)
    
-            print(user.status)
-            print(user.isAdmin)
-            print(user.id)
+            #print(user.status)
+            #print(user.isAdmin)
+            #print(user.id)
             #cursor_obj.execute(sql, (user.status, str(user.isAdmin), user.id))
             cursor_obj.execute(sql) 
             
