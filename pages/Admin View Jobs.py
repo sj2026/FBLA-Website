@@ -122,3 +122,4 @@ def loadTable(value):
 def dataframe_difference_jobs(df1: pd.DataFrame, df2: pd.DataFrame):
     """Find rows which are different between two DataFrames."""
     return pd.concat([df1, df2]).drop_duplicates(keep=False)
+

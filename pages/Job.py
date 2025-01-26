@@ -4,11 +4,11 @@ import dash_bootstrap_components as dbc
 from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 
-dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
+dash.register_page(__name__, path_template="/job/none/none")
 
 # Default job data structure
 
-# Standard input style
+# standard input style
 input_style = {
     "backgroundColor": "#bec2cb",
     "color": "#1a1f61",
@@ -16,11 +16,12 @@ input_style = {
     "height": "40px",
     "borderRadius": "5px",
     "padding": "5px",
-    "border": "1px solid #1a1f61",  # Dark blue border for inputs
-    "overflowY": "auto",  # Make input scrollable if text overflows
+    "border": "1px solid #1a1f61",  
+    "overflowY": "auto",
+    "fontSize": "1.5vw",  
 }
 
-# Textarea style with scroll
+# textarea style 
 textarea_style = {
     "width": "100%",
     "height": "100px",
@@ -28,12 +29,12 @@ textarea_style = {
     "color": "#1a1f61",
     "borderRadius": "5px",
     "padding": "5px",
-    "resize": "vertical",  # Allow vertical resizing for the textarea
-    "overflowY": "auto",  # Enable scrolling if content exceeds the height
-    "border": "1px solid #1a1f61",  # Dark blue border for textareas
+    "resize": "vertical",  
+    "overflowY": "auto",  
+    "border": "1px solid #1a1f61",  
+    "fontSize": "1.5vw",
 }
 
-# Navbar styling
 navbar = html.Div(
     style={
         "display": "flex",
@@ -59,14 +60,12 @@ navbar = html.Div(
                 "display": "flex",
                 "gap": "20px",
                 "alignItems": "center",
-                "fontFamily": "Garamond",  # Ensure consistent font for navbar links
+                "fontFamily": "Garamond", 
             },
             children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("View Jobs", href="/jobposting/<mode>/<job_id>", className="navbar"),
+ html.A("Home", href="/", className="navbar"),
                 html.A("Sign Up", href="/signup", className="navbar"),
                 html.A("Sign In", href="/signin", className="navbar"),
-                html.A("Post a Job", href="/job/<mode>/<job_id>", className="navbar"),
             ]
         ),
     ],
@@ -111,7 +110,6 @@ def layout(mode=None, job_id=None, **kwargs):
         readOnly = "readOnly"
         onlyRead = True
 
-    # Form inputs
     inputs = [
         {
             "label": "Job Title",
@@ -175,7 +173,7 @@ def layout(mode=None, job_id=None, **kwargs):
     input_rows = [
         dbc.Row(
             [
-                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61"}),  # Dark blue label
+                dbc.Label(input_item["label"], html_for=input_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),  # Added responsive font size
                 dbc.Col(
                     dbc.Input(
                         id=input_item["id"],
@@ -195,7 +193,7 @@ def layout(mode=None, job_id=None, **kwargs):
     textarea_rows = [
         dbc.Row(
             [
-                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61"}),  # Dark blue label
+                dbc.Label(textarea_item["label"], html_for=textarea_item["id"], width=2, style={"color": "#1a1f61", "fontSize": "1.5vw"}),  # Added responsive font size
                 dbc.Col(
                     dcc.Textarea(
                         id=textarea_item["id"],
@@ -226,7 +224,7 @@ def layout(mode=None, job_id=None, **kwargs):
                 "border": "none",
                 "borderRadius": "5px",
                 "cursor": "pointer",
-                "fontSize": "16px",
+                "fontSize": "1.5vw",  
             },
         ),
         html.Div(id = "confirmation", children = "")
@@ -249,7 +247,7 @@ def layout(mode=None, job_id=None, **kwargs):
                 "border": "none",
                 "borderRadius": "5px",
                 "cursor": "pointer",
-                "fontSize": "16px",
+                "fontSize": "1.5vw",
             },
         ),
         html.Div(id = "redirectToapply"),

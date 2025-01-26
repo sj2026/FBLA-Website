@@ -46,4 +46,3 @@ def layout (searchTerm = None):
         page_size = 10
         ))
     
-
