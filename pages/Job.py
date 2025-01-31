@@ -3,8 +3,9 @@ from dash import Input, Output, html, State, callback, dcc
 import dash_bootstrap_components as dbc
 from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
+from pages import PageUtil
 
-dash.register_page(__name__, path_template="/job/none/none")
+dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
 
 # Default job data structure
 
@@ -35,13 +36,29 @@ textarea_style = {
     "fontSize": "1.5vw",
 }
 
+
 navbar = html.Div(
     style={
         "display": "flex",
+        
         "alignItems": "center",
         "justifyContent": "space-between",
         "padding": "10px 20px",
+        "margin": "10px",
         "backgroundColor": "#bec2cb",
+        "boxSizing": "border-box",
+        "overflowY": "auto"
+        #"backgroundColor": "#bec2cb",
+            #"padding": "0",
+            #"color": "#1a1f61",
+            #"margin": "0",
+            #"border": "10px double #1a1f61",
+            #"boxSizing": "border-box",
+            #"fontFamily": "Garamond",
+            #"display": "flex",
+            #"flexDirection": "column",
+            #"height": "100%",
+            #"overflowY": "auto",
     },
     children=[
         html.A(
@@ -55,7 +72,12 @@ navbar = html.Div(
                 },
             ),
         ),
-        html.Nav(
+        html.Div(id="navbar_job"),
+        
+    ],
+)
+
+'''html.Nav(
             style={
                 "display": "flex",
                 "gap": "20px",
@@ -63,13 +85,12 @@ navbar = html.Div(
                 "fontFamily": "Garamond", 
             },
             children=[
- html.A("Home", href="/", className="navbar"),
+                html.A("Home", href="/", className="navbar"),
                 html.A("Sign Up", href="/signup", className="navbar"),
                 html.A("Sign In", href="/signin", className="navbar"),
             ]
-        ),
-    ],
-)
+        ),'''
+
 
 # Layout function for Job Posting page
 def layout(mode=None, job_id=None, **kwargs):
@@ -85,7 +106,7 @@ def layout(mode=None, job_id=None, **kwargs):
 
     # Set job details for 'view' and 'edit' modes
     job = {}
-    #print(job_id)
+    print(job_id)
     if job_id is None or job_id == "none" :
         job = {
             "id": 0,
@@ -266,10 +287,31 @@ def layout(mode=None, job_id=None, **kwargs):
         form = dbc.Form(input_rows + textarea_rows)
 
 
+    content = html.Div(
+                children=[
+                html.H2("Job Posting", style={"textAlign": "center"}),
+                html.Div(
+                    style={
+                        "textAlign": "center",
+                        "margin": "20px auto",
+                        "width": "95%",
+                        "backgroundColor": "none",
+                        #"height": "calc(90vh - 140px)",
+                        "overflowY": "auto",
+                        "padding": "20px",
+                        "boxSizing": "border-box",
+                        "borderRadius": "5px",
+                        "border": "2px solid #1a1f61",
+                    },
+                    children=form,
+                ),
+                ]
+            )
 
 
     #form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
-
+    return PageUtil.getContentWithTemplate("navbar_job", content)
+    '''
     return html.Div(
         style={
             "border": "10px double #1a1f61",
@@ -310,14 +352,18 @@ def layout(mode=None, job_id=None, **kwargs):
         ),
     ],
 )
+    '''
+
 
 @callback(
+    Output('navbar_job', 'children'),
     Input('session','data'),
 )
 def initial_load(data):
     #print(data)
     global session 
     session = data
+    return PageUtil.getMenu(session)
 
 
 @callback(
@@ -373,3 +419,5 @@ def onSubmit(clicks, title, company, location, workHours, wageAmount, descriptio
     else:
         dataAccess.createJob(newJob)
         return "You have successfully created the job posting. Please wait for the admin to approve or decline the posting."
+
+

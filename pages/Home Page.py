@@ -2,6 +2,10 @@ import dash
 from dash import html, callback, Input, Output, State, dcc
 import dash_bootstrap_components as dbc
 
+from pages import PageUtil
+
+
+
 dash.register_page(__name__, path='/') 
 
 def layout(**kwargs):
@@ -15,18 +19,31 @@ def layout(**kwargs):
                     id="jobSearch_row",
                     placeholder="Search For a Job Title, Company, etc",
                     className="input",
-                    disabled=True 
-                ),
-                width=10
+                    disabled=False,
+                    style={  "backgroundColor": "#bec2cb",  
+                                            "color": "#1a1f61",  
+                                            "borderColor": "#1a1f61",  
+                                            "fontFamily": "Garamond",  
+                                            "fontSize": "1.5vw",  
+                                            "padding": "10px",  
+                                            "width": "100%",  
+                                            "borderRadius": "5px",  
+                                            "textAlign": "center",  
+                                            "marginTop": "0px",  
+                                            "marginBottom": "5px",  
+                             }
+              ),
+                width=15
             ),
         ],
         className="input",  
     )
 
     searchButton = html.Div(
-        html.Button("Search", id='search_button', className="button", n_clicks=0, disabled=True) 
+        html.Button("Search", id='search_button', className="button", n_clicks=0) 
     )
 
+    global form
     form = dbc.Form([jobSearch_input, searchButton], style={"textAlign": "center"})
 
     # main layout structure
@@ -72,7 +89,7 @@ def layout(**kwargs):
                     html.H1(
                         "Sun Prairie West Job Search",
                         style={
-                            "fontSize": "40px",
+                            "fontSize": "4vw",
                             "textAlign": "left",
                         }
                     ),
@@ -228,7 +245,7 @@ def layout(**kwargs):
                     "color": "white",
                     "textAlign": "center",
                     "padding": "20px",
-                    "fontSize": "18px",
+                    "fontSize": "1.5vw",
                     "width": "100%",
                     "borderTop": "5px solid #549fc7",
                 },
@@ -244,7 +261,7 @@ def layout(**kwargs):
                             "2850 Ironwood Dr, Sun Prairie, WI 53590",
                         ],
                         style={
-                            "fontSize": "20px",
+                            "fontSize": "1.5vw",
                             "color": "white",
                         }
                     ),
@@ -262,7 +279,7 @@ def layout(**kwargs):
                         style={
                             "color": "white",
                             "marginBottom": "5px",
-                            "fontSize": "20px",
+                            "fontSize": "1.5vw",
                         }
                     ),
                     html.A(
@@ -290,73 +307,8 @@ def layout(**kwargs):
 )
 def initial_load(data):
     session = data
-    if session and session['loggedIn']:
-        if session['userStatus'] == "Student":
-            return html.Nav(
-                style={
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",
-                    "alignItems": "center",
-                },
-                children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("Student Profile", href="jobs", className="navbar"),
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("Resumes", href="createposting", className="navbar"),
-                    html.A("Apply for a job", href="contactus", className="navbar"),
-                ]
-            )
-
-        elif session['userStatus'] == "Employee":
-            return html.Nav(
-                style={
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",
-                    "alignItems": "center",
-                },
-                children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("Create Job Posting", href="/job/none/none", className="navbar"),                   # navbar buttons
-                    html.A("Sign Out", href="/", className="navbar"),
-                    html.A("View Postings", href="/viewcreations/" + str(session['id']), className="navbar"),
-                    html.A("Contact Us", href="/contactus", className="navbar"),
-                    ]
-                    
-                    
-                    ),
-
-        elif session['userStatus'] == "Admin":
-            return html.Nav(
-                style={
-                    "padding": "10px",
-                    "display": "flex",
-                    "justifyContent": "space-around",
-                    "alignItems": "center",
-                },
-                children=[
-                    html.A("Home", href="/", className="navbar"),
-                    html.A("View Users", href="jobs", className="navbar"),
-                    html.A("Sign Out", href="signup", className="navbar"),
-                    html.A("View Job Postings", href="createposting", className="navbar"),
-                    html.A("Contact Us", href="contactus", className="navbar"),
-                ]
-            )
-    else:
-        return html.Nav(
-            style={
-                "padding": "10px",
-                "display": "flex",
-                "justifyContent": "space-around",
-                "alignItems": "center",
-            },
-            children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-            ]
-        )
+    return PageUtil.getMenu(session)
+    
 
 @callback(
     Output("main_content", "children"),
@@ -368,11 +320,8 @@ def update_content(data):
         # show job search form if logged in
         return html.Div(
             children=[
-                html.P(
-                    "Please enter a job title or company to search for available job postings.",
-                    style={"fontSize": "20px", "marginBottom": "20px"}
-                ),
-                form
+                form,
+                html.Div(id = "redirectToJobs"),
             ]
         )
     else:
@@ -383,7 +332,7 @@ def update_content(data):
                     "This is our website for Sun Prairie West High School students looking for a job. "
                     "Please sign up or sign in to view job postings.",
                     style={
-                        "fontSize": "20px",
+                        "fontSize": "1.5vw",
                         "marginBottom": "20px",
                     }
                 ),
@@ -391,8 +340,33 @@ def update_content(data):
                     html.A(
                         "Start Here",
                         href="signup",
-                        className="button"
+                        className="button",
+                        style={
+                                "backgroundColor": "#1a1f61", 
+                            "color": "white",  
+                            "fontFamily": "Garamond", 
+                            "fontSize": "1.5vw",  
+                            "padding": "10px 20px",  
+                            "border": "none", 
+                            "borderRadius": "5px",  
+                            "cursor": "pointer",  
+                            "marginTop": "0px",  
+                            "marginBottom": "10px",  
+                        },
+
                     )
                 ),
             ]
         )
+
+
+@callback(
+    Output("redirectToJobs", 'children'),
+    Input('search_button', 'n_clicks'),
+    State('jobSearch_row', 'value'),
+    prevent_initial_call=True, 
+)
+
+def onSearch(clicks, searchTerm):
+    #print("in search")
+    return dcc.Location(pathname="/viewposting/"+ str(searchTerm), id="location_JobID")

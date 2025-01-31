@@ -10,6 +10,9 @@ class Application:
     additionalDetails: str
     link_application : str = ''
     
+    studentName :str = ""
+    resumeName : str = ""
+    
     
     def __str__(self):
         return f"Application: {{id = {self.id}, Job ID = {self.jobID}, Student ID = {self.studentID}, Resume ID = {self.resumeID}, status = {self.status}, Additional Details = {self.additionalDetails}}}"
@@ -22,6 +25,8 @@ class Application:
             'resumeID': self.resumeID,
             'status' : self.status,
             'additionalDetails': self.additionalDetails,
-            "link_application" : self.link_application
+            "link_application" : self.link_application,
+            "studentName" : self.studentName,
+            "resumeName" : self.resumeName
         }
     

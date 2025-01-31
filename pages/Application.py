@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 from db.ApplicationDataAccess import ApplicationDataAccess
 from beans.Application import Application
 from db.ResumeDataAccess import ResumeDataAccess
+from pages import PageUtil
 
 
 #app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -146,6 +147,23 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
         )
         ]
     )
+    
+    resume_input_hidden = dbc.Row(
+        [
+        dbc.Col(
+            dcc.Dropdown(
+            options= [],
+            multi=True,
+            placeholder="Select a Resume",
+            style={
+                "display" : "none",
+            },
+            id = "resumeID_row",
+            
+        )
+        )
+        ]
+    )
 
     message = html.Div(id="OutputJobApplication", children="")
 
@@ -160,20 +178,24 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
 
     # Form layout for 'view' and 'edit' modes
     if mode == 'view':
-        form = dbc.Form([ studentID_input, additionalDetails_input, link_element, message])
+        form = dbc.Form([ studentID_input, additionalDetails_input, resume_input_hidden, link_element, message])
     else:
         form = dbc.Form([additionalDetails_input, resume_input, submitButton, message])
 
-    return html.Div(
+    layout= html.Div(
         style=form_style,
         children=form
     )
     
+    return PageUtil.getContentWithTemplate("navbar_application",layout)
+    
 @callback(
-    Output('resumeID_row','options'),
-    Input('session','data'),
+    [Output('resumeID_row','options'),
+    Output('navbar_application', 'children')],
+    Input('session', 'modified_timestamp'),
+    State('session', 'data'),
 )
-def initial_load(data):
+def initial_load(modified_timestamp,data):
     #print(data)
     global session 
     session = data
@@ -188,7 +210,11 @@ def initial_load(data):
             options.append(
                 {"label": resume.resumeName, "value": str(resume.id)}
             )
-        return options
+    if len(options) == 0:
+        options.append(
+                {"label": "None", "value": "None"}
+            )
+    return [options,PageUtil.getMenu(session)]
     
     #if (screenMode == 'view' and applicationID != None):
      #   options = []
@@ -222,3 +248,5 @@ def onSubmit(clicks, additionalDetails, resume):
         dataAccess.createApplication(application)
 
     return "You have successfully created or updated the application."
+
+

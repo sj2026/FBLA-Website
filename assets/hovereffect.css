@@ -1,7 +1,7 @@
 .navbar {
     color: #1a1f61; 
     text-decoration: none; 
-    font-size: 20px; 
+    font-size: 1.5vw; 
     transition: color 0.3s, text-decoration 0.3s;
 }
 
@@ -49,6 +49,8 @@
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     font-weight: 500;
 }
+
+.Select-menu-outer { display : block !important; }
 
 
 

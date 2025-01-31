@@ -9,7 +9,7 @@ class User:
     phoneNumber = str
     isAdmin = str
     status = str
-    username = str
+    username = str = ''
     password = str
     
     def __str__(self):

@@ -216,16 +216,16 @@ def layout(**kwargs):
 )
 def on_submit(n_clicks, first_name, last_name, email, phone_number, password, username):
     data_access = UserDataAccess()
-    new_user = User(
-        firstName=first_name,
-        lastName=last_name,
-        email=email,
-        phoneNumber=phone_number,
-        isAdmin=False,
-        status="New",
-        password=password,
-        username=username,
-    )
+    new_user = User()
+    new_user.firstName=first_name
+    new_user.lastName=last_name
+    new_user.email=email
+    new_user.phoneNumber=phone_number
+    new_user.isAdmin=False
+    new_user.status="New"
+    new_user.password=password
+    new_user.username=username
+    
     data_access.createUser(new_user)
     return (
         f"You have been registered! Please wait for approval. Use your username: '{username}' "

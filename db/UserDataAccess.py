@@ -47,6 +47,49 @@ class UserDataAccess:
 
         finally:
             connection_obj.close()
+            
+    def getUserById(self, id):
+        connection_obj = ConnectionUtil.getConnection()
+        userList = []
+         
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            # Base SQL query
+            statement = '''SELECT * FROM User'''
+            statement += " WHERE id = " + str(id)
+            
+          
+            cursor_obj.execute(statement)
+
+            # Fetch results
+            output = cursor_obj.fetchall()
+
+            # Convert rows to User objects
+            for row in output:
+                user = User()
+                user.id = row[0]
+                user.firstName = row[1]
+                user.lastName = row[2]
+                user.email = row[3]
+                user.phoneNumber = row[4]
+                user.isAdmin = row[5]
+                user.status = row[6]
+                user.password = row[7]
+                user.username = row[8]
+                userList.append(user)
+                
+            if len(userList):
+                return userList[0]
+            else:
+                return None
+
+        except Exception as e:
+            print(f"Error in getUsers: {e}")
+            return None  # Return an empty DataFrame in case of error
+
+        finally:
+            connection_obj.close()
           
     def doesUserExist(self, password, username):
         connection_obj = ConnectionUtil.getConnection()
@@ -143,11 +186,8 @@ class UserDataAccess:
             cursor_obj = connection_obj.cursor()
 
             # Use parameterized query for inserts
-            sql = '''INSERT INTO User 
-                     (firstName, lastName, email, phoneNumber, isAdmin, status, password, username) 
-                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-            cursor_obj.execute(sql, (user.firstName, user.lastName, user.email, user.phoneNumber, 
-                                     user.isAdmin, user.status, user.password, user.username))
+            
+            cursor_obj.execute('INSERT INTO User (firstName, lastName, email, phoneNumber, isAdmin, status, password, username) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (user.firstName, user.lastName, user.email, user.phoneNumber, user.isAdmin, user.status, user.password, user.username))
             connection_obj.commit()
 
         except Exception as e:

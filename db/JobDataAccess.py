@@ -54,10 +54,11 @@ class JobDataAccess:
             
             # Add condition for status
             if status != "All":
-                statement += " WHERE status = ?"
-                cursor_obj.execute(statement, (status))
-            else:
-                cursor_obj.execute(statement)
+                statement += " WHERE status = '" + status + "'" 
+                #cursor_obj.execute(statement, (status))
+            #else:
+            
+            cursor_obj.execute(statement)
 
             # Fetch results
             output = cursor_obj.fetchall()
@@ -120,6 +121,7 @@ class JobDataAccess:
                 job.keywords = row[9]
                 job.status = row[10]
                 job.employerID = row[11]
+                job.link_student = '[' + row[1] + '](/job/view/' +  str(job.id) + ")"
                 job.link_applications = '[Applications](/viewallapplications/' + str(job.id) + ")"
                 jobList.append(job)
                 
@@ -139,8 +141,10 @@ class JobDataAccess:
         
         try:
             cursor_obj = connection_obj.cursor()
-            sql = "UPDATE JobPosting SET status = ? WHERE id = ?"
-            cursor_obj.execute(sql, (job.status, job.id))
+            sql = "UPDATE JobPosting SET status = '" + str(job.status) + "' WHERE id = " + str(job.id)
+            #cursor_obj.execute(sql, (job.status, job.id))
+            #print(sql)
+            cursor_obj.execute(sql)
             connection_obj.commit()
 
         except Exception as e:

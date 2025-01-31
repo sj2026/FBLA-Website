@@ -3,6 +3,7 @@ from dash import Input, Output, html, State, callback, dcc
 import dash_bootstrap_components as dbc
 from db.ResumeDataAccess import ResumeDataAccess
 from beans.Resume import Resume
+from pages import PageUtil
 
 dash.register_page(__name__, path_template="/resume/<mode>/<resume_id>")
 
@@ -42,14 +43,18 @@ textarea_style = {
 }
 
 # Navbar styling
+'''
 navbar = html.Div(
     style={
         "display": "flex",
         "alignItems": "center",
-        "justifyContent": "space-between",
+        "justifyContent": "center",
         "padding": "10px 20px",
         "backgroundColor": "#bec2cb",
+        "width" : "100%"
+        
     },
+    
     children=[
         html.A(
             href="/",
@@ -62,21 +67,11 @@ navbar = html.Div(
                 },
             ),
         ),
-        html.Nav(
-            style={
-                "display": "flex",
-                "gap": "20px",
-                "alignItems": "center",
-                "fontFamily": "Garamond",  
-            },
-            children=[
-                 html.A("Home", href="/", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-            ]
-        ),
+         # navbar 
+        html.Div(id="navbar_resume"),
     ],
 )
+'''
 
 # layout for page
 def layout(mode=None, resume_id=None, **kwargs):
@@ -190,7 +185,7 @@ def layout(mode=None, resume_id=None, **kwargs):
     submitButton = html.Div(
         html.Button(
             "Submit",
-            id="submit_button",
+            id="submit_button_resume",
             className="button",
             n_clicks=0,
             style={
@@ -205,9 +200,39 @@ def layout(mode=None, resume_id=None, **kwargs):
         ),
         style={"textAlign": "center", "marginTop": "20px"},
     )
+    
+    message = html.Div(id="outMessage", children="")
 
-    form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
 
+    form = dbc.Form(input_rows + textarea_rows + ([submitButton, message] if mode != "view" else []))
+    title = html.H2("Create Resume", style={"textAlign": "center", "fontSize": "3vw"})
+    if mode == "view":
+        title = html.H2("View Resume", style={"textAlign": "center", "fontSize": "3vw"})
+    if mode == "edit":
+        title = html.H2("Edit Resume", style={"textAlign": "center", "fontSize": "3vw"})
+        
+    layout =  html.Div(
+        children = [
+            title, 
+            html.Div(
+                        style={
+                            "textAlign": "center",
+                            "margin": "20px auto",
+                            "width": "95%",
+                            "backgroundColor": "none",
+                            #"height": "calc(90vh - 140px)",
+                            "overflowY": "auto",
+                            "padding": "20px",
+                            "boxSizing": "border-box",
+                            "borderRadius": "5px",
+                            "border": "2px solid #1a1f61",
+                        },
+                        children=form,
+                    ),
+        ]
+    )
+    return PageUtil.getContentWithTemplate("navbar_resume",layout)
+    '''
     return html.Div(
         style={
             "border": "10px double #1a1f61",
@@ -219,14 +244,18 @@ def layout(mode=None, resume_id=None, **kwargs):
             html.Div(
                 style={
                     "backgroundColor": "#bec2cb",
-                    "height": "100vh",
+                    "height": "200vh",
                     "padding": "0",
                     "color": "#1a1f61",
+                    "margin": "0",
+                    "border": "10px double #1a1f61",
+                    "overflow": "hidden",
+                    "boxSizing": "border-box",
                     "fontFamily": "Garamond",
                 },
                 children=[
                     navbar,
-                    html.H2("Create Resume", style={"textAlign": "center", "fontSize": "3vw"}), 
+                    title, 
                     html.Div(
                         style={
                             "textAlign": "center",
@@ -246,3 +275,44 @@ def layout(mode=None, resume_id=None, **kwargs):
             ),
         ],
     )
+    '''
+
+
+# Callback to handle form submission
+@callback(
+    Output('outMessage', "children"),
+    Input('submit_button_resume', 'n_clicks'),
+    State('resumeName_row', 'value'),
+    State('studentID_row', 'value'),
+    State('pastExperience_row', 'value'),
+    State('skillset_row', 'value'),
+    State('summary_row', 'value'),
+    prevent_initial_call=True
+)
+def onSubmit(clicks, resumeName, studentID, pastExperience, skillset, summary):
+    dataAccess = ResumeDataAccess()
+
+    resume = Resume()
+    resume.resumeName = resumeName
+    resume.studentID = studentID
+    resume.pastExperience = pastExperience
+    resume.skillset = skillset
+    resume.summary = summary
+
+    if screenMode == "edit":
+        resume.id = resumeID
+        dataAccess.updateResume(resume)
+    else:
+        dataAccess.createResume(resume)
+
+    return "You have successfully created or updated the resume."
+
+
+@callback(
+    Output('navbar_resume', 'children'),
+    Input('session', 'modified_timestamp'),
+    State('session', 'data'),
+)
+def initial_load(modified_timestamp,data):
+    session = data
+    return PageUtil.getMenu(session)

@@ -82,13 +82,13 @@ class ApplicationDataAccess:
         try:
             cursor_obj = connection_obj.cursor()
 
-            statement = '''SELECT * FROM JobApplication where JobID = ''' + JobID + ''''''
-
+            statement = '''SELECT job.id, job.JobID, job.StudentID, job.ResumeID, job.Status, job.AdditionalDetails, user.Firstname, user.LastName FROM JobApplication job, User user where job.JobID = ''' + str(JobID) + ''''''
+            statement = statement + " and job.StudentId = user.Id"
+            print(statement)
 
             cursor_obj.execute(statement)
 
             output = cursor_obj.fetchall()
-
             for row in output:
                 application = Application()
                 application.id = row[0]
@@ -97,7 +97,8 @@ class ApplicationDataAccess:
                 application.resumeID = row[3]
                 application.status = row[4]
                 application.additionalDetails = row[5]
-                application.link_application = '[' + row[0] + '](/jobapplication/view/' + str(application.jobID) +'/'+ str(application.id) +")"
+                application.link_application = '[' + str(row[0]) + '](/jobapplication/view/' + str(application.jobID) +'/'+ str(application.id) +")"
+                application.studentName = str(row[6]) + " " + str(row[7])
                 applicationList.append(application)
             
             df = pd.DataFrame.from_records([d.to_dict() for d in applicationList])

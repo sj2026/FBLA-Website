@@ -45,13 +45,13 @@ class ResumeDataAccess:
         try:
             cursor_obj = connection_obj.cursor()
 
-            statement = '''SELECT * FROM Resume where ID = ''' + str(StudentID) + ''''''
+            statement = '''SELECT * FROM Resume where StudentID = ''' + str(StudentID) + ''''''
 
-
+            
             cursor_obj.execute(statement)
 
             output = cursor_obj.fetchall()
-
+            
             for row in output:
                 resume = Resume()
                 resume.id = row[0]
@@ -60,6 +60,7 @@ class ResumeDataAccess:
                 resume.pastExperience = row[3]
                 resume.skillset = row[4]
                 resume.summary = row[5]
+                resume.link_edit = '[' + str(resume.id) + '](/resume/edit/' +  str(resume.id) + ")"
                 resumeList.append(resume)
             
             if (format != "List"):
