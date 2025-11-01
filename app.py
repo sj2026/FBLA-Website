@@ -1,21 +1,21 @@
 import dash
 from dash import Dash, html, dcc
 import dash_bootstrap_components as dbc
+import dash_mantine_components as dmc
 
 app = Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.BOOTSTRAP], suppress_callback_exceptions=True)
 
-app.layout = html.Div(
+app.layout = dmc.MantineProvider(
 
            
     
     children=[
-
+        dcc.Location(id='url', refresh=True),
         dcc.Store(id = "session", storage_type="session"),
+        html.Div(html.Label("", id="tempHolder")),
+        
     
         html.Div([
-            #html.Div(
-        #     dcc.Link(f"{page['name']} - {page['path']}", href=page["relative_path"])
-        # ) for page in dash.page_registry.values()
     ]),
     dash.page_container
 ])

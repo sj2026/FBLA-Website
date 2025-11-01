@@ -1,0 +1,2 @@
+source activate
+conda activate FBLAWebsite

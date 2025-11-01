@@ -4,16 +4,38 @@ import dash_bootstrap_components as dbc
 from db.UserDataAccess import UserDataAccess
 from beans.User import User
 
+"""
+This code handles sign up of new users.
+"""
 # Keep this
 dash.register_page(__name__, path='/signup')
 
+input_style = {
+    "backgroundColor": "#FFFDF2",
+    "color": "black",
+    "width": "80%",
+    "height": "25px",
+    "borderRadius": "5px",
+    "padding": "5px",
+    "border": "1px solid black",
+    "overflowY": "auto",
+    "fontSize": "1.5vw",  
+}
+
+
 def layout(**kwargs):
+    """
+    Defines the content for the page.
+    Embeds the content inside the template for the website.
+
+    Returns: Dash HTML tags to display.
+    """
     return html.Div(
         style={
-            "backgroundColor": "#bec2cb",
+            "backgroundColor": "#FFFDF2",
             "height": "100vh",
             "padding": "0",
-            "color": "#1a1f61",
+            "color": "black",
             "margin": "0",
             "border": "10px double #1a1f61",
             "overflow": "hidden",
@@ -28,7 +50,7 @@ def layout(**kwargs):
                     "alignItems": "center",
                     "justifyContent": "space-between",
                     "padding": "10px 20px",
-                    "backgroundColor": "#bec2cb",
+                    "backgroundColor": "#FFFDF2",
                 },
                 children=[
                     # logo
@@ -36,6 +58,7 @@ def layout(**kwargs):
                         href="/",
                         children=html.Img(
                             src="/assets/logo.png",
+                            alt = "Website Logo. Shows image of a blue wolf (mascot of Sun Prairie West High School).",
                             style={
                                 "height": "80px",
                                 "width": "auto",
@@ -64,14 +87,14 @@ def layout(**kwargs):
                 style={
                     "textAlign": "center",
                     "position": "absolute",
-                    "top": "55%",
+                    "top": "50%",
                     "left": "50%",
                     "transform": "translate(-50%, -50%)",
                     "width": "95%",
                     "backgroundColor": "none",
                 },
                 children=[
-                    html.H2("Sign Up", style={"color": "#1a1f61", "fontSize": "3vw"}),  
+                    html.H2("Sign Up", style={"color": "black", "fontSize": "3vw"}),  
                     dbc.Form(
                         [
                             dbc.Row(
@@ -82,10 +105,7 @@ def layout(**kwargs):
                                             type="text",
                                             id="first_name_row",
                                             placeholder="Enter your first name",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -100,10 +120,7 @@ def layout(**kwargs):
                                             type="text",
                                             id="last_name_row",
                                             placeholder="Enter your last name",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -118,10 +135,7 @@ def layout(**kwargs):
                                             type="email",
                                             id="email_row",
                                             placeholder="Enter your email",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -136,10 +150,7 @@ def layout(**kwargs):
                                             type="tel",
                                             id="phone_number_row",
                                             placeholder="Enter your phone number",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -154,10 +165,7 @@ def layout(**kwargs):
                                             type="password",
                                             id="password_row",
                                             placeholder="Create your password",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -172,10 +180,7 @@ def layout(**kwargs):
                                             type="text",
                                             id="username_row",
                                             placeholder="Create your username",
-                                            style={"backgroundColor": "#bec2cb",
-                                                   "color": "#1a1f61",
-                                                   "borderColor": "#1a1f61",
-                                                   "fontSize": "1.5vw"},
+                                            style= input_style,
                                         ),
                                         width=8,
                                     ),
@@ -188,13 +193,22 @@ def layout(**kwargs):
                                     id="submit_button_signUp",
                                     className="button",
                                     n_clicks=0,
-                                    style={"backgroundColor": "#1a1f61",
-                                           "color": "white",
-                                           "fontSize": "1.5vw"},
+                                    style={
+                                        "backgroundColor": "black",
+                                        "color": "#FFFDF2",
+                                        "padding": "10px 20px",
+                                        "border": "none",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
+                                        "fontSize": "1.5vw",  
+                                        "position": "center",
+                                        "top": "100%",
+                                        "left": "550px"
+                                        },
                                 ),
                                 style={"textAlign": "center"},
                             ),
-                            html.Div(id="message", style={"marginTop": "10px", "color": "#1a1f61", "fontSize": "1.5vw"}),
+                            html.Div(id="message", style={"marginTop": "10px", "color": "black", "fontSize": "1.5vw"}),
                         ]
                     ),
                 ],
@@ -215,6 +229,10 @@ def layout(**kwargs):
     prevent_initial_call=True,
 )
 def on_submit(n_clicks, first_name, last_name, email, phone_number, password, username):
+    """
+    Handles on submit. Creates the user in the database
+
+    """
     data_access = UserDataAccess()
     new_user = User()
     new_user.firstName=first_name

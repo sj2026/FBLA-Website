@@ -2,6 +2,11 @@ from whoosh.index import create_in
 from whoosh.fields import *
 from db.JobDataAccess import JobDataAccess
 
+"""
+Creates an index to perform text based search.
+Gets all the approved jobs and adds it to the index.
+
+"""
 schema = Schema(id = ID(stored=True), title=TEXT(stored=True), company=TEXT(stored=True), location=TEXT(stored=True), workHours=TEXT(stored=True), wageAmount=TEXT(stored=True), description=TEXT(stored=True), qualifications=TEXT(stored=True), benefits=TEXT(stored=True), keywords=TEXT)
 
 ix = create_in("indexdir", schema)

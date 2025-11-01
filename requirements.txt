@@ -3,3 +3,34 @@ pandas
 dash_bootstrap_components
 cryptography
 whoosh
+dash_holoniq_wordcloud
+plotly
+
+dash-chat
+
+#Embedchain didn't work moving to langchain
+#embedchain
+#embedchain[huggingface-hub]
+#embedchain[opensource]
+#gpt4all
+
+#Langchain related code moved to seperate project.
+#langchain
+#langchain-community
+#langchain-huggingface
+#huggingface_hub
+#transformers
+#sentence-transformers
+#faiss-cpu
+
+dash_mantine_components
+dash_iconify
+secure-smtplib
+
+PyJWT
+pytz
+
+pyttsx3
+
+
+

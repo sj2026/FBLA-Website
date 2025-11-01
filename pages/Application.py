@@ -4,10 +4,12 @@ import dash_bootstrap_components as dbc
 from db.ApplicationDataAccess import ApplicationDataAccess
 from beans.Application import Application
 from db.ResumeDataAccess import ResumeDataAccess
+from db.UserDataAccess import UserDataAccess
 from pages import PageUtil
 
-
-#app = Dash(external_stylesheets=[dbc.themes.BOOTSTRAP])
+"""
+This code handles add, edit and viewing of job application 
+"""
 dash.register_page(__name__, path_template = "/jobapplication/<mode>/<job_id>/<application_id>")
 
 application = {
@@ -20,36 +22,37 @@ application = {
 
 # Custom styles for inputs and textareas
 input_style = {
-    "backgroundColor": "#bec2cb",
-    "color": "#1a1f61",
+    "backgroundColor": "#FFFDF2",
+    "color": "black",
     "width": "100%",
     "height": "40px",
     "borderRadius": "5px",
     "padding": "5px",
-    "border": "1px solid #1a1f61",
+    "border": "1px solid black",
     "overflowY": "auto",  # Make input scrollable if text overflows
 }
 
 textarea_style = {
-    "backgroundColor": "#bec2cb",
-    "color": "#1a1f61",
+    "backgroundColor": "#FFFDF2",
+    "color": "black",
     "width": "100%",
     "height": "200px",
     "borderRadius": "5px",
     "padding": "5px",
     "resize": "vertical",
     "overflowY": "auto",
-    "border": "1px solid #1a1f61",
+    "border": "1px solid black",
+    "fontSize": 22
 }
 
 button_style = {
-    "backgroundColor": "#1a1f61",
-    "color": "white",
+    "backgroundColor": "black",
+    "color": "#FFFDF2",
     "padding": "10px 20px",
     "border": "none",
     "borderRadius": "5px",
     "cursor": "pointer",
-    "fontSize": "16px",
+    "fontSize": 22,
 }
 
 form_style = {
@@ -59,6 +62,20 @@ form_style = {
 
 # Layout function
 def layout(mode=None, job_id = None, application_id = None, **kwargs):
+    """
+    Defines the content for the page.
+    Embeds the content inside the template for the website.
+
+    Args:
+        mode: Page mode. 
+            - Edit - Edit mode
+            - View - View mode
+            - none - new application
+        job_id: id of the job
+        application_id: id of the application
+
+    Returns: Dash HTML tags to display.
+    """
     global screenMode
     screenMode = mode
 
@@ -72,6 +89,8 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
     readOnly = ''
     onlyRead = False
     
+    global UserdataAccess
+    UserdataAccess = UserDataAccess()
     
     global ResumedataAccess
     ResumedataAccess = ResumeDataAccess()
@@ -117,13 +136,14 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
 
     additionalDetails_input = dbc.Row(
         [
-            dbc.Label("Additional Comments to Employer", html_for="additionalDetails_row", width=2),
+            dbc.Label("Additional Comments to Employer:", html_for="additionalDetails_row", width=2, style = {"fontSize":22}),
             dbc.Col(
                 dcc.Textarea(
                     id='additionalDetails_row',
                     value=application['additionalDetails'],
                     readOnly=onlyRead,
                     style=textarea_style,
+                    placeholder='Type comments here:'
                 ),
             ),
         ],
@@ -132,7 +152,7 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
 
     resume_input = dbc.Row(
         [
-        dbc.Label("Add Resume", html_for="resumeID_row", width = 2),
+        dbc.Label("Add Resume", html_for="resumeID_row", width = 2, style = {'fontSize': 22}),
         dbc.Col(
             dcc.Dropdown(
             options= [],
@@ -141,6 +161,7 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
             style={
                 "width": "100%",
                 "margin": "20px 0",
+                "fontSize": 22
             },
             id = "resumeID_row"
         )
@@ -175,10 +196,19 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
     link_element = html.Div(
         dcc.Link("View Resume", href="/resume/view/"+str(application['resumeID']))
     ) 
+    
+    
+
 
     # Form layout for 'view' and 'edit' modes
     if mode == 'view':
-        form = dbc.Form([ studentID_input, additionalDetails_input, resume_input_hidden, link_element, message])
+        email_Applicant = html.Div(
+        html.A(
+            "Email Applicant",
+            href="mailto:" + UserdataAccess.getEmail(applicationTemp.studentID),
+                    ),   
+        )
+        form = dbc.Form([ studentID_input, additionalDetails_input, resume_input_hidden, link_element, email_Applicant, message])
     else:
         form = dbc.Form([additionalDetails_input, resume_input, submitButton, message])
 
@@ -196,7 +226,17 @@ def layout(mode=None, job_id = None, application_id = None, **kwargs):
     State('session', 'data'),
 )
 def initial_load(modified_timestamp,data):
-    #print(data)
+    """
+    Handles the intial load of the page.
+
+    Args:
+        data : session data.
+    
+    Returns: 
+        a) Value for Resume drop down
+        b) Menu to be displayed based on the session data. 
+    
+    """
     global session 
     session = data
     options = []
@@ -233,6 +273,13 @@ def initial_load(modified_timestamp,data):
     prevent_initial_call=True
 )
 def onSubmit(clicks, additionalDetails, resume):
+    """
+    Saves/Updates the application details to the database
+
+    Args:
+        additionalDetails: additional comments attribute.
+        resume: resume details.
+    """
     dataAccess = ApplicationDataAccess()
     application = Application()
     application.additionalDetails = additionalDetails

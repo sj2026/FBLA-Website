@@ -10,13 +10,35 @@ from db.ResumeDataAccess import ResumeDataAccess
 from db.UserDataAccess import UserDataAccess
 from pages import PageUtil
 
-#user_data = {
-#    'firstName': ''
-#}
+"""
+This code handles profile for the logged in user
+"""
+
+# Standard input style
+input_style = {
+    "backgroundColor": "white",
+    "color": "black",
+    "width": "100%",
+    "height": "30px",
+    "borderRadius": "5px",
+    "padding": "5px",
+    "border": "1px solid black",
+    "overflowY": "auto",
+    "fontSize": "1.5vw",  
+}
+
 
 dash.register_page(__name__, path_template='/profile/<profile_id>')
 
 def layout(profile_id = None,**kwargs):
+    """
+    Defines the content for the page.
+    Embeds the content inside the template for the website.
+    Args:
+        profile_id : profile id for the logged in user
+
+    Returns: Dash HTML tags to display.
+    """
     user_data = {
             'firstName': '',
             'lastName' : '',
@@ -67,12 +89,7 @@ def layout(profile_id = None,**kwargs):
                                             id="name-input",
                                             placeholder="Enter your first name",
                                             value=user_data['firstName'],  # fill with user data
-                                            style={
-                                                "backgroundColor": "#bec2cb",
-                                                "color": "#1a1f61",
-                                                "borderColor": "#1a1f61",
-                                                "fontSize": "1.5vw",  
-                                            },
+                                            style=input_style,
                                         ),
                                         width=8,
                                     ),
@@ -89,12 +106,7 @@ def layout(profile_id = None,**kwargs):
                                             id="name-input",
                                             placeholder="Enter your last name",
                                             value=user_data['lastName'],  # fill with user data
-                                            style={
-                                                "backgroundColor": "#bec2cb",
-                                                "color": "#1a1f61",
-                                                "borderColor": "#1a1f61",
-                                                "fontSize": "1.5vw",  
-                                            },
+                                            style=input_style,
                                         ),
                                         width=8,
                                     ),
@@ -110,12 +122,7 @@ def layout(profile_id = None,**kwargs):
                                             id="email-input",
                                             placeholder="Enter your email",
                                             value=user_data['email'],  # fill with user data
-                                            style={
-                                                "backgroundColor": "#bec2cb",
-                                                "color": "#1a1f61",
-                                                "borderColor": "#1a1f61",
-                                                "fontSize": "1.5vw", 
-                                            },
+                                            style=input_style,
                                         ),
                                         width=8,
                                     ),
@@ -132,12 +139,7 @@ def layout(profile_id = None,**kwargs):
                                             id="phone-input",
                                             placeholder="Enter your phone number",
                                             value=user_data['phoneNumber'],  # fill with user data
-                                            style={
-                                                "backgroundColor": "#bec2cb",
-                                                "color": "#1a1f61",
-                                                "borderColor": "#1a1f61",
-                                                "fontSize": "1.5vw", 
-                                            },
+                                            style=input_style
                                         ),
                                         width=8,
                                     ),
@@ -152,7 +154,7 @@ def layout(profile_id = None,**kwargs):
                                     className="button",
                                     n_clicks=0,
                                     style={
-                                        "backgroundColor": "#1a1f61",
+                                        "backgroundColor": "#0F9AE6",
                                         "color": "white",
                                         "fontSize": "1.5vw",  
                                     },
@@ -184,18 +186,18 @@ def layout(profile_id = None,**kwargs):
             style_data={
                 'whiteSpace': 'normal',  
                 'height': 'auto',  
-                  'backgroundColor':'#bec2cb',
+                  'backgroundColor':'white',
             },
             style_cell_conditional=[
                 {'if': {'column_id': 'description'}, 'width': '30%'},
             ],
             style_table={
                 'fontFamily': 'Garamond',  
-                'color': '#1a1f61',  
+                'color': 'black',  
             },
             style_header={
-                'backgroundColor': '#1a1f61',  
-                'color': 'white',  
+                'backgroundColor': 'black',  
+                'color': '#FFFDF2',  
                 'fontWeight': 'bold', 
             },
             style_cell={
@@ -230,6 +232,16 @@ def layout(profile_id = None,**kwargs):
     State('session', 'data'),
 )
 def initial_load(modified_timestamp,data):
+    """
+    Handles the intial load of the page.
+
+    Args:
+        data : session data.
+    
+    Returns: Menu to be displayed based on the session data. 
+    E.g. The student menu for a student.
+    
+    """
     global session
     session = data
     return PageUtil.getMenu(session)

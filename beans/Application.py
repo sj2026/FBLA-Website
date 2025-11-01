@@ -12,7 +12,7 @@ class Application:
     
     studentName :str = ""
     resumeName : str = ""
-    
+    link_InterviewInvite: str = ''
     
     def __str__(self):
         return f"Application: {{id = {self.id}, Job ID = {self.jobID}, Student ID = {self.studentID}, Resume ID = {self.resumeID}, status = {self.status}, Additional Details = {self.additionalDetails}}}"
@@ -27,6 +27,7 @@ class Application:
             'additionalDetails': self.additionalDetails,
             "link_application" : self.link_application,
             "studentName" : self.studentName,
-            "resumeName" : self.resumeName
+            "resumeName" : self.resumeName,
+            "InterviewInvite": self.link_InterviewInvite
         }
     

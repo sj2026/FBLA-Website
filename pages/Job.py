@@ -5,19 +5,23 @@ from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 from pages import PageUtil
 
+"""
+This code handles add, edit and viewing of job posting 
+"""
+
 dash.register_page(__name__, path_template="/job/<mode>/<job_id>")
 
 # Default job data structure
 
 # standard input style
 input_style = {
-    "backgroundColor": "#bec2cb",
-    "color": "#1a1f61",
+    "backgroundColor": "#FFFDF2",
+    "color": "black",
     "width": "100%",
     "height": "40px",
     "borderRadius": "5px",
     "padding": "5px",
-    "border": "1px solid #1a1f61",  
+    "border": "1px solid black",  
     "overflowY": "auto",
     "fontSize": "1.5vw",  
 }
@@ -26,13 +30,13 @@ input_style = {
 textarea_style = {
     "width": "100%",
     "height": "100px",
-    "backgroundColor": "#bec2cb",
-    "color": "#1a1f61",
+    "backgroundColor": "#FFFDF2",
+    "color": "black",
     "borderRadius": "5px",
     "padding": "5px",
     "resize": "vertical",  
     "overflowY": "auto",  
-    "border": "1px solid #1a1f61",  
+    "border": "1px solid black",  
     "fontSize": "1.5vw",
 }
 
@@ -45,14 +49,14 @@ navbar = html.Div(
         "justifyContent": "space-between",
         "padding": "10px 20px",
         "margin": "10px",
-        "backgroundColor": "#bec2cb",
+        "backgroundColor": "#FFFDF2",
         "boxSizing": "border-box",
         "overflowY": "auto"
-        #"backgroundColor": "#bec2cb",
+        #"backgroundColor": "#FFFDF2",
             #"padding": "0",
-            #"color": "#1a1f61",
+            #"color": "black",
             #"margin": "0",
-            #"border": "10px double #1a1f61",
+            #"border": "10px double black",
             #"boxSizing": "border-box",
             #"fontFamily": "Garamond",
             #"display": "flex",
@@ -65,6 +69,7 @@ navbar = html.Div(
             href="/",
             children=html.Img(
                 src="/assets/logo.png",
+                alt = "Website Logo. Shows image of a blue wolf (mascot of Sun Prairie West High School).",
                 style={
                     "height": "80px",
                     "width": "auto",
@@ -77,23 +82,26 @@ navbar = html.Div(
     ],
 )
 
-'''html.Nav(
-            style={
-                "display": "flex",
-                "gap": "20px",
-                "alignItems": "center",
-                "fontFamily": "Garamond", 
-            },
-            children=[
-                html.A("Home", href="/", className="navbar"),
-                html.A("Sign Up", href="/signup", className="navbar"),
-                html.A("Sign In", href="/signin", className="navbar"),
-            ]
-        ),'''
+
 
 
 # Layout function for Job Posting page
 def layout(mode=None, job_id=None, **kwargs):
+    """
+    Defines the content for the page.
+    Embeds the content inside the template for the website.
+
+    Args:
+        mode: Page mode. 
+            - Edit - Edit mode
+            - View - View mode
+            - view_as_student - View mode for student
+            - none - new application
+        job_id: id of the job
+
+    Returns: Dash HTML tags to display.
+    """
+
     global screenMode
     screenMode = mode
 
@@ -239,8 +247,8 @@ def layout(mode=None, job_id=None, **kwargs):
             className="button",
             n_clicks=0,
             style={
-                "backgroundColor": "#1a1f61",
-                "color": "white",
+                "backgroundColor": "black",
+                "color": "#FFFDF2",
                 "padding": "10px 20px",
                 "border": "none",
                 "borderRadius": "5px",
@@ -262,8 +270,8 @@ def layout(mode=None, job_id=None, **kwargs):
             className="button",
             n_clicks=0,
             style={
-                "backgroundColor": "#1a1f61",
-                "color": "white",
+                "backgroundColor": "black",
+                "color": "#FFFDF2",
                 "padding": "10px 20px",
                 "border": "none",
                 "borderRadius": "5px",
@@ -311,48 +319,7 @@ def layout(mode=None, job_id=None, **kwargs):
 
     #form = dbc.Form(input_rows + textarea_rows + ([submitButton] if mode != "view" else []))
     return PageUtil.getContentWithTemplate("navbar_job", content)
-    '''
-    return html.Div(
-        style={
-            "border": "10px double #1a1f61",
-            "padding": "0",
-            "boxSizing": "border-box",
-            "backgroundColor": "#bec2cb",
-        },
-
-        
-   children=[
-        html.Div(
-            style={
-                "backgroundColor": "#bec2cb",
-                "height": "100vh",
-                "padding": "0",
-                "color": "#1a1f61",
-                "fontFamily": "Garamond",
-            },
-            children=[
-                navbar,
-                html.H2("Job Posting", style={"textAlign": "center"}),
-                html.Div(
-                    style={
-                        "textAlign": "center",
-                        "margin": "20px auto",
-                        "width": "95%",
-                        "backgroundColor": "none",
-                        "height": "calc(90vh - 140px)",
-                        "overflowY": "auto",
-                        "padding": "20px",
-                        "boxSizing": "border-box",
-                        "borderRadius": "5px",
-                        "border": "2px solid #1a1f61",
-                    },
-                    children=form,
-                ),
-            ],
-        ),
-    ],
-)
-    '''
+    
 
 
 @callback(
@@ -360,7 +327,17 @@ def layout(mode=None, job_id=None, **kwargs):
     Input('session','data'),
 )
 def initial_load(data):
-    #print(data)
+    """
+    Handles the intial load of the page.
+
+    Args:
+        data : session data.
+    
+    Returns: 
+        a) Value for Resume drop down
+        b) Menu to be displayed based on the session data. 
+    
+    """
     global session 
     session = data
     return PageUtil.getMenu(session)
@@ -373,7 +350,10 @@ def initial_load(data):
    prevent_initial_call = True
 )
 def onApply(clicks, data):
-    print("IN apply" + str(session))
+    """
+    Redirects the control to job application page
+    
+    """
     return dcc.Location(pathname="/jobapplication/none/"+ str(jobID) + "/none", id="location_applicationID")
     
 
@@ -396,6 +376,10 @@ def onApply(clicks, data):
 )
 
 def onSubmit(clicks, title, company, location, workHours, wageAmount, description, qualifications, benefits, keywords, data):
+    """
+    Handles the submit event for the Job.
+    
+    """
     dataAccess = JobDataAccess()
     session = data
     

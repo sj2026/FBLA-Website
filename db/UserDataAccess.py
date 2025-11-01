@@ -196,3 +196,28 @@ class UserDataAccess:
 
         finally:
             connection_obj.close()
+            
+    def getEmail(self, id):
+        connection_obj = ConnectionUtil.getConnection()
+         
+        try:
+            cursor_obj = connection_obj.cursor()
+
+            # Base SQL query
+            statement = '''SELECT * FROM User WHERE Id = ''' + str(id)
+            
+            cursor_obj.execute(statement)
+            
+            # Fetch results
+            output = cursor_obj.fetchall()
+
+            # Convert rows to User objects
+            for row in output:
+                return row[3]
+
+        except Exception as e:
+            print(f"Error in getUsers: {e}")
+            return pd.DataFrame()  # Return an empty DataFrame in case of error
+
+        finally:
+            connection_obj.close()

@@ -28,6 +28,13 @@ class Searcher:
                 job.link_student = '[' + row['title'] + '](/job/view_as_student/' +  job.id + ")"
                 #job.keywords = row['keywords']
                 job.status = 'Approved'
+
+                if (job.company == "Amazon Inc."):
+                    job.jobPicture = "/assets/AmazonLogo.jpg"
+
+                elif (job.company == "Starbucks Inc."):
+                    job.jobPicture = "/assets/StarbucksLogo.png"
+                    
                 jobList.append(job)
         
         df = pd.DataFrame.from_records([d.to_dict() for d in jobList])

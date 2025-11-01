@@ -1,5 +1,4 @@
 .navbar {
-    color: #1a1f61; 
     text-decoration: none; 
     font-size: 1.5vw; 
     transition: color 0.3s, text-decoration 0.3s;
@@ -13,7 +12,7 @@
     text-decoration: none;
     width: 500px;
     text-align: center;
-    color: royalblue;
+    color: #0F9AE6;
 }
 
 .inputMedium {
@@ -24,7 +23,7 @@
     text-decoration: none;
     width: 350px;
     text-align: center;
-    color: royalblue;
+    color: #0F9AE6;
 }
 
 .inputSmall {
@@ -35,11 +34,11 @@
     text-decoration: none;
     width: 200px;
     text-align: center;
-    color: royalblue;
+    color: #0F9AE6;
 }
 
 .navbar:hover {
-    color: #549fc7; 
+    color: #172098; 
     text-decoration: none; 
 }
 
@@ -51,6 +50,12 @@
 }
 
 .Select-menu-outer { display : block !important; }
+
+@media only screen and (max-width: 1026px) {
+    #wordcloud_div {
+        display: none;
+    }
+}
 
 
 

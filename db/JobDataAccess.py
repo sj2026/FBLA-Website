@@ -30,6 +30,13 @@ class JobDataAccess:
                 job.keywords = row[9]
                 job.status = row[10]
 
+                
+                if (job.company == "Amazon"):
+                    job.jobPicture = "/assets/AmazonLogo.jpg"
+
+                elif (job.company == "Starbucks"):
+                    job.jobPicture = "/assets/StarbucksLogo.png"
+
                 return job
     
     
@@ -77,6 +84,13 @@ class JobDataAccess:
                 job.benefits = row[8]
                 job.keywords = row[9]
                 job.status = row[10]
+
+                if (job.company == "Amazon Inc."):
+                    job.jobPicture = "/assets/AmazonLogo.jpg"
+
+                elif (job.company == "Starbucks Inc."):
+                    job.jobPicture = "/assets/StarbucksLogo.png"
+
                 jobList.append(job)
                 
             # Convert to DataFrame
@@ -123,6 +137,14 @@ class JobDataAccess:
                 job.employerID = row[11]
                 job.link_student = '[' + row[1] + '](/job/view/' +  str(job.id) + ")"
                 job.link_applications = '[Applications](/viewallapplications/' + str(job.id) + ")"
+
+                if (job.company == "Amazon Inc."):
+                    job.jobPicture = "/assets/AmazonLogo.jpg"
+
+                elif (job.company == "Starbucks Inc."):
+                    job.jobPicture = "/assets/StarbucksLogo.png"
+
+
                 jobList.append(job)
                 
             # Convert to DataFrame

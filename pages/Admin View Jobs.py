@@ -5,16 +5,26 @@ from db.JobDataAccess import JobDataAccess
 from beans.Job import Job
 from pages import PageUtil
 
+"""
+This code handles viewing jobs for administrator
+"""
+
 dash.register_page(__name__, path='/viewjobs')
 
+#Load all the jobs from the database
 dataAccess = JobDataAccess()
-
 df = dataAccess.getJobs("All")
 
 def layout(**kwargs):
+    """
+    Defines the content for the page.
+    Embeds the content inside the template for the website.
+
+    Returns: Dash HTML tags to display.
+    """
     layout = html.Div(
         style={
-            "backgroundColor": "#bec2cb", 
+            "backgroundColor": "#FFFDF2", 
             "height": "80vh",  
             "fontFamily": "Garamond",  
         },
@@ -46,9 +56,9 @@ def layout(**kwargs):
                         {"id": 'location', "name": "Job Location", 'editable': False},
                         {"id": 'workHours', "name": "Work Hours", 'editable': False},
                         {"id": 'wageAmount', "name": "Wage Amount", 'editable': False},
-                        {"id": 'description', "name": "Job Description", 'editable': False},
-                        {"id": 'qualifications', "name": "Job Qualifications", 'editable': False},
-                        {"id": 'benefits', "name": "Job Benefits", 'editable': False},
+                        #{"id": 'description', "name": "Job Description", 'editable': False},
+                        #{"id": 'qualifications', "name": "Job Qualifications", 'editable': False},
+                        #{"id": 'benefits', "name": "Job Benefits", 'editable': False},
                         {"id": 'keywords', "name": "Job Keywords", 'editable': False},
                         {"id": 'status', "name": "User Status", 'presentation': 'dropdown', 'editable': True},
                     ],
@@ -66,29 +76,38 @@ def layout(**kwargs):
                     page_action="native", 
                     page_current=0,
                     page_size=10, 
-                  #style_as_list_view=True,
+                    style_as_list_view=True,
             style_data={
                 'whiteSpace': 'normal',  
-                'height': 'auto',  
-                  'backgroundColor':'#bec2cb',
+                'max-height': '100px',  
+                'overflow-wrap' : 'break-word',
+                'backgroundColor':'#FFFDF2',
             },
             style_cell_conditional=[
-                {'if': {'column_id': 'description'}, 'width': '30%'},
+                {'if': {'column_id': 'status'}, 
+                        'height': '68px',  # Adjust this value until the border aligns
+                        'minHeight': '38px', # 
+                        'paddingTop': '0px', # Often dropdowns need less top/bottom padding
+                        'paddingBottom': '0px',
+                        #'verticalAlign': 'middle', # Ensures content is vertically centered
+                 },
             ],
             style_table={
                 'fontFamily': 'Garamond',  
-                'color': '#1a1f61',  
+                'color': 'black',  
             },
             style_header={
-                'backgroundColor': '#1a1f61',  
-                'color': 'white',  
+                'backgroundColor': 'black',  
+                'color': '#FFFDF2',  
                 'fontWeight': 'bold', 
             },
             style_cell={
                 'padding': '10px', 
                 'textAlign': 'left', 
+                #'overflow': 'hidden',
+                #'textOverflow': 'ellipsis',
             },
-                )
+            )
             ),
 
             
@@ -109,6 +128,14 @@ def layout(**kwargs):
     prevent_initial_call=True
 )
 def update_tol_db_jobs(rows, columns, prev_rows):
+    """
+    Updates the job data in the database if the row is changed.
+
+    Args:
+        rows : rows in the data table.
+        columns: columns in the data table.
+        prev_rows: row data before edit.
+    """
     if prev_rows:
         df1 = pd.DataFrame(rows)
         df2 = pd.DataFrame(prev_rows)
@@ -126,6 +153,15 @@ def update_tol_db_jobs(rows, columns, prev_rows):
     Input('dropDownMenu', "value")
 )
 def loadTable(value):
+    """
+    Loads the job data from the database.
+
+    Args:
+        value : filter value.
+    
+    Returns: dictionary of the Job records.
+    
+    """
     df = dataAccess.getJobs(value)
     return df.to_dict('records')  
 
@@ -140,6 +176,17 @@ def dataframe_difference_jobs(df1: pd.DataFrame, df2: pd.DataFrame):
     State('session', 'data'),
 )
 def initial_load(modified_timestamp,data):
+    """
+    Handles the intial load of the page.
+
+    Args:
+        data : session data.
+    
+    Returns: Menu to be displayed based on the session data. 
+    E.g. The student menu for a student.
+    
+    """
+
     global session
     session = data
     return PageUtil.getMenu(session)

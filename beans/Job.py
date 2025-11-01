@@ -17,6 +17,7 @@ class Job:
     link_applications = str = ''
     link = str
     employerID = 0
+    jobPicture = "/assets/FBLABigTechImage.png"
     
     def __str__(self):
         return f"Job: {{id = {self.id}, title = {self.title}, company = {self.company}, location = {self.location}, work hours = {self.workHours}, wage amount = {self.wageAmount}, description = {self.description}, qualifications = {self.qualifications}, benefits = {self.benefits}, keywords = {self.keywords}, status = {self.status}}}"
@@ -37,6 +38,7 @@ class Job:
             'link' : self.link,
             'link_student' : self.link_student,
             'link_applications' : self.link_applications,
-            'employerID': self.employerID
+            'employerID': self.employerID,
+            'jobPicture' : self.jobPicture
         }
     
